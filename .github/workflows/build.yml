@@ -1,34 +1,17 @@
-# Spring Boot configuration
-spring:
-  profiles:
-    active: development
-  # Security configuration
-  security:
-    user:
-      name: user
-      password: user
-  # Database
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/book_db
-    username: postgres
-    password: password
-  # JPA properties
-  jpa:
-    hibernate:
-      ddl-auto: update # When you launch the application for the first time - switch "none" at "create"
-    show-sql: true
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    open-in-view: false
-    generate-ddl: true
-# Logger configuration
-logging:
-  pattern:
-    console: "%d %-5level %logger : %msg%n"
-  level:
-    org.springframework: info
-    org.hibernate: debug
-# Server configuration
-server:
-  port: 8080 #set your port
+name: Java CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'amazon corretto'
+      - name: Build with Maven
+        run: mvn --batch-mode --update-snapshots package
