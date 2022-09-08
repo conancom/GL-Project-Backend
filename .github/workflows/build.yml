@@ -7,12 +7,34 @@ on:
   push:
     branches:
       - main
+
+env: 
+  DB_HOST: localhost
+  DB_USERNAME: postgres
+  DB_PASSWORD: password
+    
 jobs:
   #Test's job
   tests:
     name: Unit tests
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
+    #Setup DB
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: postgres        
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     #Job's steps
     steps:
       #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
