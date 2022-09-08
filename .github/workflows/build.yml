@@ -1,56 +1,34 @@
-#Workflow name
-name: CI/CD Pipeline
-on:
-  #Manually trigger workflow runs
-  workflow_dispatch:
-  #Trigger the workflow on push from the main branch
-  push:
-    branches:
-      - main
-    
-jobs:
-  #Test's job
-  tests:
-    name: Unit tests
-    #Run on Ubuntu using the latest version
-    runs-on: ubuntu-latest
-    #Setup DB
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_DB: postgres        
-          POSTGRES_PASSWORD: password
-          POSTGRES_USER: postgres
-        ports:
-          - 5432:5432
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    #Job's steps
-    steps:
-      #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
-      - uses: actions/checkout@v1
-      #Set up JDK 17
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: '17'
-          
-      - name: Create database
-        run: PGPASSWORD=password psql -U postgres -tc "SELECT 'CREATE DATABASE ProjectGL' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'ProjectGL')"
-
-      #Set up Maven cache
-      - name: Cache Maven packages
-        #This action allows caching dependencies and build outputs to improve workflow execution time.
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      #Run Tests
-      - name: Run Tests
-        run: mvn -B test
+# Spring Boot configuration
+spring:
+  profiles:
+    active: development
+  # Security configuration
+  security:
+    user:
+      name: user
+      password: user
+  # Database
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/book_db
+    username: postgres
+    password: password
+  # JPA properties
+  jpa:
+    hibernate:
+      ddl-auto: update # When you launch the application for the first time - switch "none" at "create"
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    generate-ddl: true
+# Logger configuration
+logging:
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+  level:
+    org.springframework: info
+    org.hibernate: debug
+# Server configuration
+server:
+  port: 8080 #set your port
