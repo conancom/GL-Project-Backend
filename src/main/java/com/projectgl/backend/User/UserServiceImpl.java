@@ -10,7 +10,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     final public UserRepository userRepository;
     final public EntityManager entityManager;
@@ -21,22 +21,25 @@ public class UserServiceImpl implements UserService{
         this.entityManager = entityManager;
     }
 
-    public void findUserByUsername(String username){
+    public void findUserByUsername(String username) {
         List<User> users = userRepository.findByUsername(username);
+    }
+
+    public void findUserByEmail(String Email) {
 
     }
 
-    public void findUserByEmail(String Email){
-
+    public boolean userExistsUsername(RegisterDto registerDto) {
+        TypedQuery<User> queryUsername = entityManager.createQuery("SELECT new com.projectgl.backend.User.User(u.username) FROM User u WHERE u.username = :username", User.class);
+        return queryUsername.setParameter("username", registerDto.getUsername()).getResultList().isEmpty();
     }
 
-    public boolean userExists(RegisterDto registerDto){
-        TypedQuery<User> query = entityManager.createQuery("SELECT new com.projectgl.backend.User.User(u.username) FROM User u WHERE u.username = :username",
-        User.class);
-        return !query.setParameter("username", registerDto.getUsername()).getResultList().isEmpty();
+    public boolean userExistsEmail(RegisterDto registerDto) {
+        TypedQuery<User> queryEmail = entityManager.createQuery("SELECT new com.projectgl.backend.User.User(u.username) FROM User u WHERE u.email = :email", User.class);
+        return queryEmail.setParameter("email", registerDto.getEmail()).getResultList().isEmpty();
     }
 
-    public RegisterResponse createUser(RegisterDto registerDto){
+    public RegisterResponse createUser(RegisterDto registerDto) {
         User user = new User(registerDto.getUsername(), registerDto.getEmail(), registerDto.getPassword());
         userRepository.save(user);
         return RegisterResponse.builder().status(RegisterResponse.Status.SUCCESS).username(registerDto.getUsername()).build();

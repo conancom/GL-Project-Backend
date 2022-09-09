@@ -11,11 +11,9 @@ import lombok.Setter;
 public class RegisterResponse {
 
     private RegisterResponse.Status status;
-    public enum Status {
-        SUCCESS,
-        DUPLICATE_EMAIL,
-        DUPLICATE_USERNAME;
-    }
-
     private String username;
+
+    public enum Status {
+        SUCCESS, DUPLICATE_EMAIL, DUPLICATE_USERNAME
+    }
 }

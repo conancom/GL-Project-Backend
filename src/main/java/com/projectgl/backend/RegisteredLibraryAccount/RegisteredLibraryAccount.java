@@ -29,12 +29,9 @@ public class RegisteredLibraryAccount {
     private LocalDateTime updateTimeStamp;
 
     private AccountType accountType;
+
     public enum AccountType {
-        STEAM,
-        ORIGIN,
-        UBISOFT,
-        EPIC,
-        GOG;
+        STEAM, ORIGIN, UBISOFT, EPIC, GOG
     }
 
     @Setter

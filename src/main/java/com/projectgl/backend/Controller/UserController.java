@@ -21,11 +21,14 @@ public class UserController {
     }
 
     @PostMapping("/api/v1/register")
-    public RegisterResponse registerNewUser(@RequestBody RegisterDto registerDto, HttpServletRequest request){
-        if (userService.userExists(registerDto)){
-            return RegisterResponse.builder().build();
-        }else {
-            return userService.createUser(registerDto);
+    public RegisterResponse registerNewUser(@RequestBody RegisterDto registerDto, HttpServletRequest request) {
+        if (userService.userExistsUsername(registerDto)) {
+            return RegisterResponse.builder().username(registerDto.getUsername()).status(RegisterResponse.Status.DUPLICATE_USERNAME).build();
         }
+        if (userService.userExistsEmail(registerDto)) {
+            return RegisterResponse.builder().username(registerDto.getUsername()).status(RegisterResponse.Status.DUPLICATE_EMAIL).build();
+        }
+        return userService.createUser(registerDto);
+
     }
 }
