@@ -1,9 +1,11 @@
 package com.projectgl.backend.RegisteredLibraryAccount;
 
 import com.projectgl.backend.PersonalGameInformation.PersonalGameInformation;
+import com.projectgl.backend.User.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -35,8 +37,17 @@ public class RegisteredLibraryAccount {
         GOG;
     }
 
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+
     @OneToMany
     @JoinColumn(name = "registeredlibraryaccountid")
     private List<PersonalGameInformation> personalGameInformationList;
+
+    public void addPersonalGameInformation(PersonalGameInformation personalGameInformation){
+        this.personalGameInformationList.add(personalGameInformation);
+        personalGameInformation.setRegisteredLibraryAccount(this);
+    }
 
 }

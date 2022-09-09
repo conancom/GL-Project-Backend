@@ -25,7 +25,7 @@ public class User {
     private String password;
 
     @OneToMany
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userid")
     private List<RegisteredLibraryAccount> registeredLibraryAccountList;
 
     private LocalDateTime registrationTimeStamp;
@@ -33,5 +33,10 @@ public class User {
     private LocalDateTime updateTimeStamp;
 
     private LocalDateTime lastLoginTimeStamp;
+
+    public void addRegisteredLibraryAccount(RegisteredLibraryAccount registeredLibraryAccount){
+        this.registeredLibraryAccountList.add(registeredLibraryAccount);
+        registeredLibraryAccount.setUser(this);
+    }
 
 }

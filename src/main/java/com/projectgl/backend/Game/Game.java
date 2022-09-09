@@ -1,11 +1,13 @@
 package com.projectgl.backend.Game;
 
+import com.projectgl.backend.PersonalGameInformation.PersonalGameInformation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "game")
@@ -28,8 +30,17 @@ public class Game {
 
     private String backgroudImg;
 
+    @OneToMany
+    @JoinColumn(name = "gameid")
+    private List<PersonalGameInformation> personalGameInformationList;
+
     private LocalDateTime creationTimeStamp;
 
     private LocalDateTime updateTimeStamp;
+
+    public void addPersonalGameInformation(PersonalGameInformation personalGameInformation){
+        this.personalGameInformationList.add(personalGameInformation);
+        personalGameInformation.setGame(this);
+    }
 
 }
