@@ -22,7 +22,10 @@ public class UserController {
 
     @PostMapping("/api/v1/register")
     public RegisterResponse registerNewUser(@RequestBody RegisterDto registerDto, HttpServletRequest request){
-
-        return RegisterResponse.builder().build();
+        if (userService.userExists(registerDto)){
+            return RegisterResponse.builder().build();
+        }else {
+            return userService.createUser(registerDto);
+        }
     }
 }

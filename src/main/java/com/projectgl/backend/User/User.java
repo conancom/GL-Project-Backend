@@ -14,11 +14,20 @@ import java.util.List;
 @NoArgsConstructor
 public class User {
 
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.registrationTimeStamp = LocalDateTime.now();
+        this.updateTimeStamp = LocalDateTime.now();
+        this.updateTimeStamp = LocalDateTime.now();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String username;
 
     private String email;
 
