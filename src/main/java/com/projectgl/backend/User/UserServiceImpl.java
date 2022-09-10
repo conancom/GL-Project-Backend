@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,14 +18,6 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository, EntityManager entityManager) {
         this.userRepository = userRepository;
         this.entityManager = entityManager;
-    }
-
-    public void findUserByUsername(String username) {
-        List<User> users = userRepository.findByUsername(username);
-    }
-
-    public void findUserByEmail(String Email) {
-
     }
 
     public boolean userExistsUsername(RegisterDto registerDto) {

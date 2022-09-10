@@ -29,6 +29,5 @@ public class UserController {
             return RegisterResponse.builder().username(registerDto.getUsername()).status(RegisterResponse.Status.DUPLICATE_EMAIL).build();
         }
         return userService.createUser(registerDto);
-
     }
 }
