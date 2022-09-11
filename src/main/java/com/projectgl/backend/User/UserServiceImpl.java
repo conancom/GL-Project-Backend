@@ -21,13 +21,11 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean userExistsUsername(RegisterDto registerDto) {
-        TypedQuery<User> queryUsername = entityManager.createQuery("SELECT new com.projectgl.backend.User.User(u.username) FROM User u WHERE u.username = :username", User.class);
-        return queryUsername.setParameter("username", registerDto.getUsername()).getResultList().isEmpty();
+        return !entityManager.createQuery("SELECT u.username FROM User u WHERE u.username = :username", User.class).setParameter("username", registerDto.getUsername()).getResultList().isEmpty();
     }
 
     public boolean userExistsEmail(RegisterDto registerDto) {
-        TypedQuery<User> queryEmail = entityManager.createQuery("SELECT new com.projectgl.backend.User.User(u.username) FROM User u WHERE u.email = :email", User.class);
-        return queryEmail.setParameter("email", registerDto.getEmail()).getResultList().isEmpty();
+        return !entityManager.createQuery("SELECT u.username FROM User u WHERE u.email = :email", User.class).setParameter("email", registerDto.getEmail()).getResultList().isEmpty();
     }
 
     public RegisterResponse createUser(RegisterDto registerDto) {
