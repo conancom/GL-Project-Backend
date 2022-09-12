@@ -37,10 +37,7 @@ class UserServiceImplTest {
     }
 
     private void expectUsernameIsInDatabase() {
-        TypedQuery<User> query = (TypedQuery<User>) Mockito.mock(TypedQuery.class);
-        Mockito.when(entityManager.createQuery("SELECT u.username FROM User u WHERE u.username = :username", String.class)).thenReturn(query);
-        Mockito.when(query.setParameter("username", registerDto.getUsername())).thenReturn(query);
-        Mockito.when(query.getResultList()).thenReturn(List.of(User.builder().build()));
+        Mockito.doReturn(true).when(userRepository).existsByUsername(registerDto.getUsername());
     }
 
     @Test
@@ -51,10 +48,7 @@ class UserServiceImplTest {
     }
 
     private void expectUsernameIsNotInDatabase() {
-        TypedQuery<User> query = (TypedQuery<User>) Mockito.mock(TypedQuery.class);
-        Mockito.when(entityManager.createQuery("SELECT u.username FROM User u WHERE u.username = :username", User.class)).thenReturn(query);
-        Mockito.when(query.setParameter("username", registerDto.getUsername())).thenReturn(query);
-        Mockito.when(query.getResultList()).thenReturn(Collections.emptyList());
+        Mockito.doReturn(false).when(userRepository).existsByUsername(registerDto.getUsername());
     }
 
     @Test
@@ -65,10 +59,7 @@ class UserServiceImplTest {
     }
 
     private void expectEmailIsInDatabase() {
-        TypedQuery<User> query = (TypedQuery<User>) Mockito.mock(TypedQuery.class);
-        Mockito.when(entityManager.createQuery("SELECT u.username FROM User u WHERE u.email = :email", User.class)).thenReturn(query);
-        Mockito.when(query.setParameter("email", registerDto.getEmail())).thenReturn(query);
-        Mockito.when(query.getResultList()).thenReturn(List.of(User.builder().build()));
+        Mockito.doReturn(true).when(userRepository).existsByEmail(registerDto.getEmail());
     }
 
     @Test
@@ -79,10 +70,7 @@ class UserServiceImplTest {
     }
 
     private void expectEmailIsNotInDatabase() {
-        TypedQuery<User> query = (TypedQuery<User>) Mockito.mock(TypedQuery.class);
-        Mockito.when(entityManager.createQuery("SELECT u.username FROM User u WHERE u.email = :email", User.class)).thenReturn(query);
-        Mockito.when(query.setParameter("email", registerDto.getEmail())).thenReturn(query);
-        Mockito.when(query.getResultList()).thenReturn(Collections.emptyList());
+        Mockito.doReturn(false).when(userRepository).existsByEmail(registerDto.getEmail());
     }
 
     @Test

@@ -4,13 +4,13 @@ import com.projectgl.backend.Dto.RegisterDto;
 import com.projectgl.backend.Response.RegisterResponse;
 import com.projectgl.backend.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Controller
+@RestController
 public class UserController {
 
     final public UserService userService;
