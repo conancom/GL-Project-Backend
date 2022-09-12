@@ -28,6 +28,7 @@ CREATE TABLE public."user" (
 	email varchar NOT NULL,
 	username varchar NOT NULL,
 	"password" varchar NOT NULL,
+	"salt" varchar NOT NULL,
 	registrationtimestamp timestamp NOT NULL,
 	updatetimestamp timestamp NOT NULL,
 	lastlogintimestamp timestamp NOT NULL,
