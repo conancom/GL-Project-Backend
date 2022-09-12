@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,11 +20,11 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean userExistsUsername(RegisterDto registerDto) {
-        return !entityManager.createQuery("SELECT u.username FROM User u WHERE u.username = :username", User.class).setParameter("username", registerDto.getUsername()).getResultList().isEmpty();
+        return !entityManager.createQuery("SELECT u.username FROM User u WHERE u.username = :username", String.class).setParameter("username", registerDto.getUsername()).getResultList().isEmpty();
     }
 
     public boolean userExistsEmail(RegisterDto registerDto) {
-        return !entityManager.createQuery("SELECT u.username FROM User u WHERE u.email = :email", User.class).setParameter("email", registerDto.getEmail()).getResultList().isEmpty();
+        return !entityManager.createQuery("SELECT u.username FROM User u WHERE u.email = :email", String.class).setParameter("email", registerDto.getEmail()).getResultList().isEmpty();
     }
 
     public RegisterResponse createUser(RegisterDto registerDto) {

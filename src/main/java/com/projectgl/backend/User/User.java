@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user", schema = "public")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +20,7 @@ public class User {
         this.password = password;
         this.registrationTimeStamp = LocalDateTime.now();
         this.updateTimeStamp = LocalDateTime.now();
-        this.updateTimeStamp = LocalDateTime.now();
+        this.lastLoginTimeStamp = LocalDateTime.now();
     }
 
     @Id
@@ -37,10 +37,13 @@ public class User {
     @JoinColumn(name = "userid")
     private List<RegisteredLibraryAccount> registeredLibraryAccountList;
 
+    @Column(name = "registrationtimestamp")
     private LocalDateTime registrationTimeStamp;
 
+    @Column(name = "updatetimestamp")
     private LocalDateTime updateTimeStamp;
 
+    @Column(name = "lastlogintimestamp")
     private LocalDateTime lastLoginTimeStamp;
 
     public void addRegisteredLibraryAccount(RegisteredLibraryAccount registeredLibraryAccount){
