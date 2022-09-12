@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
         int outputLength = 32;
         int parallelism = 1;
         Argon2Parameters.Builder builder = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
-                .withVersion(Argon2Parameters.ARGON2_VERSION_13) // 19
+                .withVersion(Argon2Parameters.ARGON2_VERSION_13)
                 .withIterations(opsLimit)
                 .withMemoryAsKB(memLimit)
                 .withParallelism(parallelism)
