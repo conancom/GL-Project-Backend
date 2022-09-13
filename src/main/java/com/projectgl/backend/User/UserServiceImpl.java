@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -91,6 +92,11 @@ public class UserServiceImpl implements UserService {
             return LoginResponse.builder().username(user.get().getUsername()).status(LoginResponse.Status.SUCCESS).build();
         }
         return LoginResponse.builder().username(user.get().getUsername()).status(LoginResponse.Status.INVALID_PASSWORD).build();
+    }
+
+    @Override
+    public String createToken() {
+        return  String.valueOf(System.currentTimeMillis()).substring(8, 13) + UUID.randomUUID().toString().substring(1,10);
     }
 
     private boolean isEmail(String email) {
