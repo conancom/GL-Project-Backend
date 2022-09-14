@@ -1,9 +1,12 @@
 package com.projectgl.backend.Controller;
 
+import com.projectgl.backend.Dto.LoginDto;
 import com.projectgl.backend.Dto.RegisterDto;
+import com.projectgl.backend.Response.LoginResponse;
 import com.projectgl.backend.Response.RegisterResponse;
 import com.projectgl.backend.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,5 +32,15 @@ public class UserController {
             return RegisterResponse.builder().username(registerDto.getUsername()).status(RegisterResponse.Status.DUPLICATE_EMAIL).build();
         }
         return userService.createUser(registerDto);
+    }
+
+    @GetMapping("/api/v1/login")
+    public LoginResponse loginUser(@RequestBody LoginDto loginDto, HttpServletRequest request) {
+        LoginResponse loginResponse = userService.loginUser(loginDto, request);
+        if (loginResponse.getStatus().equals(LoginResponse.Status.SUCCESS)) {
+            loginResponse.setSession_id(userService.createToken());
+            request.getSession().setAttribute(loginResponse.getSession_id(), "User ID HERE");
+        }
+        return loginResponse;
     }
 }
