@@ -15,6 +15,4 @@ public interface UserService {
     public RegisterResponse createUser(RegisterDto registerDto);
 
     public LoginResponse loginUser(LoginDto loginDto, HttpServletRequest request);
-
-    public String createToken();
 }

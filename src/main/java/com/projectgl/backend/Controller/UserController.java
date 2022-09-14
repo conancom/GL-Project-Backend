@@ -36,11 +36,6 @@ public class UserController {
 
     @GetMapping("/api/v1/login")
     public LoginResponse loginUser(@RequestBody LoginDto loginDto, HttpServletRequest request) {
-        LoginResponse loginResponse = userService.loginUser(loginDto, request);
-        if (loginResponse.getStatus().equals(LoginResponse.Status.SUCCESS)) {
-            loginResponse.setSession_id(userService.createToken());
-            request.getSession().setAttribute(loginResponse.getSession_id(), "User ID HERE");
-        }
-        return loginResponse;
+         return userService.loginUser(loginDto, request);
     }
 }

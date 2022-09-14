@@ -1,7 +1,10 @@
 package com.projectgl.backend.User;
 
+import com.projectgl.backend.Dto.LoginDto;
 import com.projectgl.backend.Dto.RegisterDto;
+import com.projectgl.backend.Response.LoginResponse;
 import com.projectgl.backend.Response.RegisterResponse;
+import lombok.extern.java.Log;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,8 +17,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -26,11 +31,24 @@ class UserServiceImplTest {
     @Mock
     UserRepository userRepository;
 
+    @Mock
+    HttpServletRequest request;
+
     RegisterDto registerDto;
+
+    LoginDto loginEmailDto;
+
+    LoginDto loginUsernameDto;
+
+    User user;
+
 
     @BeforeEach
     public void setUp() {
         registerDto = RegisterDto.builder().username("testUsername").email("testEmail@email.com").password("testPassword123").build();
+        loginEmailDto = LoginDto.builder().username_email("test@email.com").password("password123").build();
+        loginUsernameDto = LoginDto.builder().username_email("testusername").password("password123").build();
+        user = User.builder().username("userFromDB").email("fromDb@email.com").password("password123").salt("randomsalthere").build();
     }
 
     private void expectUsernameIsInDatabase() {
@@ -88,4 +106,27 @@ class UserServiceImplTest {
         MatcherAssert.assertThat(result.getUsername(), CoreMatchers.equalTo(registerDto.getUsername()));
         MatcherAssert.assertThat(result.getStatus(), CoreMatchers.equalTo(RegisterResponse.Status.SUCCESS));
     }
+
+    public void expectEmailExists(){
+        Mockito.when(userRepository.findByEmail(loginEmailDto.getUsername_email())).thenReturn(Optional.ofNullable(user));
+    }
+
+    @Test
+    public void loginUserShouldLoginUserWhenEmailIsCorrect(){
+        expectEmailExists();
+        LoginResponse result = userService.loginUser(loginEmailDto, request);
+        MatcherAssert.assertThat(result.getUsername(), CoreMatchers.equalTo(user.getUsername()));
+    }
+
+    public void expectUsernameExists(){
+        Mockito.when(userRepository.findByUsername(loginUsernameDto.getUsername_email())).thenReturn(Optional.ofNullable(user));
+    }
+
+    @Test
+    public void loginUserShouldLoginUserWhenUsernameIsCorrect(){
+        expectUsernameExists();
+        LoginResponse result = userService.loginUser(loginUsernameDto, request);
+        MatcherAssert.assertThat(result.getUsername(), CoreMatchers.equalTo(user.getUsername()));
+    }
+
 }

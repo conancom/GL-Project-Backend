@@ -65,12 +65,12 @@ public class UserServiceImpl implements UserService {
         if (isEmail(loginDto.getUsername_email())) {
             user = userRepository.findByEmail(loginDto.getUsername_email());
             if (user.isEmpty()) {
-                return LoginResponse.builder().username(user.get().getUsername()).status(LoginResponse.Status.INVALID_EMAIL).build();
+                return LoginResponse.builder().username(loginDto.getUsername_email()).status(LoginResponse.Status.INVALID_EMAIL).build();
             }
         } else {
             user = userRepository.findByUsername(loginDto.getUsername_email());
             if (user.isEmpty()) {
-                return LoginResponse.builder().username(user.get().getUsername()).status(LoginResponse.Status.INVALID_USERNAME).build();
+                return LoginResponse.builder().username(loginDto.getUsername_email()).status(LoginResponse.Status.INVALID_USERNAME).build();
             }
         }
 
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
         return LoginResponse.builder().username(user.get().getUsername()).status(LoginResponse.Status.SUCCESS).session_id(token).build();
     }
 
-    public String createToken() {
+    public static String createToken() {
         return String.valueOf(System.currentTimeMillis()).substring(8, 13) + UUID.randomUUID().toString().substring(1, 10);
     }
 
@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
         return mat.matches();
     }
 
-    public byte[] generateHash(String password, byte[] salt) {
+    public static byte[] generateHash(String password, byte[] salt) {
         int opsLimit = 4;
         int memLimit = 1048576;
         int outputLength = 32;
