@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     public RegisterResponse createUser(RegisterDto registerDto) {
         byte[] salt = generateSalt16Byte();
-        String securedPassword = base64Encoding(generateArgon2idSensitive(registerDto.getPassword(), salt));
+        String securedPassword = base64Encoding(generateArgon2Hash(registerDto.getPassword(), salt));
         String saltString = base64Encoding(salt);
         //byte[] saltEnc = Base64.getDecoder().decode(saltString);
         User user = new User(registerDto.getUsername(), registerDto.getEmail(), securedPassword, saltString);
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
         return RegisterResponse.builder().status(RegisterResponse.Status.SUCCESS).username(registerDto.getUsername()).build();
     }
 
-    public static byte[] generateArgon2idSensitive(String password, byte[] salt) {
+    public static byte[] generateArgon2Hash(String password, byte[] salt) {
         int opsLimit = 4;
         int memLimit = 1048576;
         int outputLength = 32;

@@ -26,9 +26,6 @@ class UserServiceImplTest {
     @Mock
     UserRepository userRepository;
 
-    @Mock
-    EntityManager entityManager;
-
     RegisterDto registerDto;
 
     @BeforeEach
