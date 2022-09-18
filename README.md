@@ -2,7 +2,7 @@
 
 JDK 18
 
-Postgres Latests
+Postgres Latest
 
 ### Set Up
 

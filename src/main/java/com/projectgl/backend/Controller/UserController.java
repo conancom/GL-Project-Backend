@@ -32,7 +32,7 @@ public class UserController {
         return userService.createUser(registerDto);
     }
 
-    @GetMapping("/api/v1/login")
+    @PostMapping("/api/v1/login")
     public LoginResponse loginUser(@RequestBody LoginDto loginDto, HttpServletRequest request) {
          return userService.loginUser(loginDto, request);
     }

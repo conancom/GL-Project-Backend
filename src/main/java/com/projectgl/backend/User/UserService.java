@@ -8,6 +8,7 @@ import com.projectgl.backend.Response.RegisterResponse;
 import javax.servlet.http.HttpServletRequest;
 
 public interface UserService {
+
     public boolean userExistsUsername(RegisterDto registerDto);
 
     public boolean userExistsEmail(RegisterDto registerDto);

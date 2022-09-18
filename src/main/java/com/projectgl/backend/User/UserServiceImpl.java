@@ -81,12 +81,12 @@ public class UserServiceImpl implements UserService {
         }
 
         String token = createToken();
-        request.getSession().setAttribute(token, user);
+        request.getSession().setAttribute(token, user.get().getId());
         return LoginResponse.builder().username(user.get().getUsername()).status(LoginResponse.Status.SUCCESS).session_id(token).build();
     }
 
     public static String createToken() {
-        return String.valueOf(System.currentTimeMillis()).substring(8, 13) + UUID.randomUUID().toString().substring(1, 10);
+        return String.valueOf(System.currentTimeMillis()).substring(8, 13) + UUID.randomUUID().toString().substring(1, 12);
     }
 
     private boolean isEmail(String email) {
