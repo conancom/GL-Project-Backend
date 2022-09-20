@@ -47,8 +47,8 @@ class UserServiceImplTest {
     public void setUp() {
         registerDto = RegisterDto.builder().username("testUsername").email("testEmail@email.com").password("testPassword123").build();
         loginEmailDto = LoginDto.builder().username_email("test@email.com").password("password123").build();
-        loginUsernameDto = LoginDto.builder().username_email("testusername").password("password123").build();
-        user = User.builder().username("userFromDB").email("fromDb@email.com").password("password123").salt("randomsalthere").build();
+        loginUsernameDto = LoginDto.builder().username_email("testUsername").password("password123").build();
+        user = User.builder().username("testUsername").email("test@email.com").password("password123").salt("randomsalthere").build();
     }
 
     private void expectUsernameIsInDatabase() {
@@ -126,7 +126,7 @@ class UserServiceImplTest {
     public void loginUserShouldNotLoginUserWhenEmailIsNotCorrect() {
         expectEmailDoesntExist();
         LoginResponse result = userService.loginUser(loginEmailDto, request);
-        MatcherAssert.assertThat(result.getUsername(), CoreMatchers.equalTo(loginEmailDto.getUsername_email()));
+        MatcherAssert.assertThat(result.getUsername(), CoreMatchers.equalTo(user.getEmail()));
         MatcherAssert.assertThat(result.getStatus(), CoreMatchers.equalTo(LoginResponse.Status.INVALID_EMAIL));
     }
 
@@ -149,7 +149,7 @@ class UserServiceImplTest {
     public void loginUserShouldNotLoginUserWhenUsernameIsNotCorrect() {
         expectUsernameDoesntExist();
         LoginResponse result = userService.loginUser(loginUsernameDto, request);
-        MatcherAssert.assertThat(result.getUsername(), CoreMatchers.equalTo(loginUsernameDto.getUsername_email()));
+        MatcherAssert.assertThat(result.getUsername(), CoreMatchers.equalTo(user.getUsername()));
         MatcherAssert.assertThat(result.getStatus(), CoreMatchers.equalTo(LoginResponse.Status.INVALID_USERNAME));
     }
 
