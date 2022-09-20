@@ -107,26 +107,50 @@ class UserServiceImplTest {
         MatcherAssert.assertThat(result.getStatus(), CoreMatchers.equalTo(RegisterResponse.Status.SUCCESS));
     }
 
-    public void expectEmailExists(){
+    public void expectEmailExists() {
         Mockito.when(userRepository.findByEmail(loginEmailDto.getUsername_email())).thenReturn(Optional.ofNullable(user));
     }
 
     @Test
-    public void loginUserShouldLoginUserWhenEmailIsCorrect(){
+    public void loginUserShouldLoginUserWhenEmailIsCorrect() {
         expectEmailExists();
         LoginResponse result = userService.loginUser(loginEmailDto, request);
         MatcherAssert.assertThat(result.getUsername(), CoreMatchers.equalTo(user.getUsername()));
     }
 
-    public void expectUsernameExists(){
+    public void expectEmailDoesntExist() {
+        Mockito.when(userRepository.findByEmail(loginEmailDto.getUsername_email())).thenReturn(Optional.empty());
+    }
+
+    @Test
+    public void loginUserShouldNotLoginUserWhenEmailIsNotCorrect() {
+        expectEmailDoesntExist();
+        LoginResponse result = userService.loginUser(loginEmailDto, request);
+        MatcherAssert.assertThat(result.getUsername(), CoreMatchers.equalTo(loginEmailDto.getUsername_email()));
+        MatcherAssert.assertThat(result.getStatus(), CoreMatchers.equalTo(LoginResponse.Status.INVALID_EMAIL));
+    }
+
+    public void expectUsernameExists() {
         Mockito.when(userRepository.findByUsername(loginUsernameDto.getUsername_email())).thenReturn(Optional.ofNullable(user));
     }
 
     @Test
-    public void loginUserShouldLoginUserWhenUsernameIsCorrect(){
+    public void loginUserShouldLoginUserWhenUsernameIsCorrect() {
         expectUsernameExists();
         LoginResponse result = userService.loginUser(loginUsernameDto, request);
         MatcherAssert.assertThat(result.getUsername(), CoreMatchers.equalTo(user.getUsername()));
+    }
+
+    public void expectUsernameDoesntExist() {
+        Mockito.when(userRepository.findByUsername(loginUsernameDto.getUsername_email())).thenReturn(Optional.empty());
+    }
+
+    @Test
+    public void loginUserShouldNotLoginUserWhenUsernameIsNotCorrect() {
+        expectUsernameDoesntExist();
+        LoginResponse result = userService.loginUser(loginUsernameDto, request);
+        MatcherAssert.assertThat(result.getUsername(), CoreMatchers.equalTo(loginUsernameDto.getUsername_email()));
+        MatcherAssert.assertThat(result.getStatus(), CoreMatchers.equalTo(LoginResponse.Status.INVALID_USERNAME));
     }
 
 }

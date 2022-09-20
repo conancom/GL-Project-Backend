@@ -1,4 +1,4 @@
-package com.projectgl.backend.Utils;
+package com.projectgl.backend.Util;
 
 public interface HashService {
 

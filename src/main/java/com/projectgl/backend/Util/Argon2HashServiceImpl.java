@@ -1,4 +1,4 @@
-package com.projectgl.backend.Utils;
+package com.projectgl.backend.Util;
 
 import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
 import org.bouncycastle.crypto.params.Argon2Parameters;
