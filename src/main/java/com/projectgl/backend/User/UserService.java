@@ -6,6 +6,7 @@ import com.projectgl.backend.Response.LoginResponse;
 import com.projectgl.backend.Response.RegisterResponse;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -16,4 +17,6 @@ public interface UserService {
     public RegisterResponse createUser(RegisterDto registerDto);
 
     public LoginResponse loginUser(LoginDto loginDto, HttpServletRequest request);
+
+    public Optional<User> findUserbyId(long userId);
 }

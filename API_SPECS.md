@@ -42,6 +42,7 @@
 ##### Response
 ```json
 {
+  "status": "SESSION_KEY_OK", //SESSION_EXPIRED, USER_DOES_NOT_EXIST
   "libraries" : [
     {
       "library_name": "STEAM", //UBISOFT, EPIC, ETC
@@ -96,6 +97,7 @@
 #### [POST] /api/v1/game-info
 ```json
 {
+  "status": "SESSION_KEY_OK", //SESSION_EXPIRED, USER_DOES_NOT_EXIST
   "game_id": "asd80973jklhf897yhnbjkbufygdfa",
   "session_id": "layusd5652mnzxbc3viggweyutabh8974"
 }

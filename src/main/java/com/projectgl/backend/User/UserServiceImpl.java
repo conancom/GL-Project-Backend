@@ -85,6 +85,10 @@ public class UserServiceImpl implements UserService {
         return LoginResponse.builder().username(user.get().getUsername()).status(LoginResponse.Status.SUCCESS).session_id(token).build();
     }
 
+    public Optional<User> findUserbyId(long userId) {
+        return userRepository.findById(userId);
+    }
+
     public static String createToken() {
         return String.valueOf(System.currentTimeMillis()).substring(8, 13) + UUID.randomUUID().toString().substring(1, 12);
     }

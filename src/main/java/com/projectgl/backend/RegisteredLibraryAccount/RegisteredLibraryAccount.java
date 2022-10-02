@@ -2,10 +2,7 @@ package com.projectgl.backend.RegisteredLibraryAccount;
 
 import com.projectgl.backend.PersonalGameInformation.PersonalGameInformation;
 import com.projectgl.backend.User.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
 public class RegisteredLibraryAccount {
 
     @Id
