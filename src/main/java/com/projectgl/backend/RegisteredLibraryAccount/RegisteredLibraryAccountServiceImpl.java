@@ -28,7 +28,6 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
             libraryAccountDetails.setLibraryName(registeredLibraryAccount.getAccountType());
             libraryAccountDetails.setLibrary_id(registeredLibraryAccount.getId());
 
-
         }
 
         return null;
