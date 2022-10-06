@@ -20,12 +20,16 @@ public class RegisteredLibraryAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "apikey")
     private String apiKey;
 
+    @Column(name = "creationtimestamp")
     private LocalDateTime creationTimeStamp;
 
+    @Column(name = "updatetimestamp")
     private LocalDateTime updateTimeStamp;
 
+    @Column(name = "type")
     private AccountType accountType;
 
     public enum AccountType {
@@ -34,6 +38,7 @@ public class RegisteredLibraryAccount {
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userid")
     private User user;
 
     @OneToMany

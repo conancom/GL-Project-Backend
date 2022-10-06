@@ -28,14 +28,13 @@ public class LibraryController {
         this.userService = userService;
     }
 
-
     @PostMapping("/api/v1/all-library-games")
     public AllLibraryGamesResponse getAllLibraryGames(@RequestBody AllLibraryGamesDto allLibraryGamesDto, HttpServletRequest request) {
-        long userId = (long) request.getSession().getAttribute(allLibraryGamesDto.getSession_id());
-        if (userId == 0) {
+        Object userId = request.getSession().getAttribute(allLibraryGamesDto.getSession_id());
+        if (userId == null) {
             return AllLibraryGamesResponse.builder().status(AllLibraryGamesResponse.Status.SESSION_EXPIRED).build();
         }
-        Optional<User> user = userService.findUserbyId(userId);
+        Optional<User> user = userService.findUserbyId((long) userId);
         if (user.isEmpty()) {
             return AllLibraryGamesResponse.builder().status(AllLibraryGamesResponse.Status.USER_DOES_NOT_EXIST).build();
         }

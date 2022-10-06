@@ -37,8 +37,7 @@ public class User {
 
     private String salt;
 
-    @OneToMany
-    @JoinColumn(name = "userid")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RegisteredLibraryAccount> registeredLibraryAccountList;
 
     @Column(name = "registrationtimestamp")
