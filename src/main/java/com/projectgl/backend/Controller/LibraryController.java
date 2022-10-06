@@ -34,10 +34,6 @@ public class LibraryController {
         if (userId == null) {
             return AllLibraryGamesResponse.builder().status(AllLibraryGamesResponse.Status.SESSION_EXPIRED).build();
         }
-        Optional<User> user = userService.findUserbyId((long) userId);
-        if (user.isEmpty()) {
-            return AllLibraryGamesResponse.builder().status(AllLibraryGamesResponse.Status.USER_DOES_NOT_EXIST).build();
-        }
-        return registeredLibraryAccountService.createAllLibraryGamesResponse(user.get());
+        return userService.createAllLibraryAccountResponse((long) userId);
     }
 }
