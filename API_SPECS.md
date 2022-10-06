@@ -43,46 +43,46 @@
 ```json
 {
   "status": "SESSION_KEY_OK", //SESSION_EXPIRED, USER_DOES_NOT_EXIST
-  "libraries" : [
+  "games": [
     {
+      "game_name": "Overwatch",
+      "game_id": "asd8y7834yhnhds",
+      "personal_game_id": "asdihasidhasd",
+      "game_description": "This is a good game made by good ppl",
+      "picture_url": "https//pic.com",
+      "banner_url": "https//pic.com",
       "library_name": "STEAM", //UBISOFT, EPIC, ETC
-      "library_id": "8ysjasdhasbd8o7sy87tg324",
-      "games": [
-        {
-          "game_name": "Overwatch",
-          "game_id": "asd8y7834yhnhds",
-          "game_description": "This is a good game made by good ppl",
-          "picture_url": "https//pic.com",
-          "banner_url": "https//pic.com"
-        },
-        {
-          "game_name": "Minecraft",
-          "game_id": "938isjdfjghshdasd",
-          "game_description": "Minecraft, what else is there to say!",
-          "picture_url": "https//pic.com",
-          "banner_url": "https//pic.com"
-        }
-      ]
+      "library_id": "8ysjasdhasbd8o7sy87tg324"
     },
     {
+      "game_name": "Minecraft",
+      "game_id": "938isjdfjghshdasd",
+      "personal_game_id": "asdihasidhasd",
+      "game_description": "Minecraft, what else is there to say!",
+      "picture_url": "https//pic.com",
+      "banner_url": "https//pic.com",
+      "library_name": "STEAM", //UBISOFT, EPIC, ETC
+      "library_id": "8ysjasdhasbd8o7sy87tg324"
+    },
+    {
+      "game_name": "Overwatch",
+      "game_id": "0984oksjmndfj8asd",
+      "personal_game_id": "asdihasidhasd",
+      "game_description": "This is a good game made by good ppl",
+      "picture_url": "https//pic.com",
+      "banner_url": "https//pic.com",
       "library_name": "GOG", //UBISOFT, EPIC, ETC
-      "library_id": "askdjhna8907dajbnsaasd",
-      "games": [
-        {
-          "game_name": "Overwatch",
-          "game_id": "0984oksjmndfj8asd",
-          "game_description": "This is a good game made by good ppl",
-          "picture_url": "https//pic.com",
-          "banner_url": "https//pic.com"
-        },
-        {
-          "game_name": "Minecraft",
-          "game_id": "kajd89a7sdkjabsdiuas",
-          "game_description": "Minecraft, what else is there to say!",
-          "picture_url": "https//pic.com",
-          "banner_url": "https//pic.com"
-        }
-      ]
+      "library_id": "askdjhna8907dajbnsaasd"
+    },
+    {
+      "game_name": "Minecraft",
+      "game_id": "kajd89a7sdkjabsdiuas",
+      "personal_game_id": "asdihasidhasd",
+      "game_description": "Minecraft, what else is there to say!",
+      "picture_url": "https//pic.com",
+      "banner_url": "https//pic.com",
+      "library_name": "GOG", //UBISOFT, EPIC, ETC
+      "library_id": "askdjhna8907dajbnsaasd"
     }
   ]
 }
