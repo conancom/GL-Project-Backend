@@ -2,12 +2,14 @@ package com.projectgl.backend.PersonalGameInformation;
 
 import com.projectgl.backend.Game.Game;
 import com.projectgl.backend.RegisteredLibraryAccount.RegisteredLibraryAccount;
+import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 @Table(name = "personalgameinformation")
 public class PersonalGameInformation {
 

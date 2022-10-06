@@ -11,6 +11,8 @@ public class GameDetail {
 
     private String game_name;
 
+    private Long personal_game_id;
+
     private Long game_id;
 
     private String game_description;

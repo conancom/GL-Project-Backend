@@ -1,5 +1,14 @@
 -- Make sure to create a Database called ProjectGL
 
+-- DROP TYPE public.accounttype;
+
+CREATE TYPE public.accounttype AS ENUM (
+	'STEAM',
+	'EPIC',
+	'UBISOFT',
+	'ORIGIN',
+	'GOG');
+
 -- Drop table
 
 -- DROP TABLE public.game;

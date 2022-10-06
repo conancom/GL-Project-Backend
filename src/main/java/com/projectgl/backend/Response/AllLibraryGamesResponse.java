@@ -2,12 +2,14 @@ package com.projectgl.backend.Response;
 
 import com.projectgl.backend.Dto.LibraryAccountDetails;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
 
 @Builder
 @Setter
+@Getter
 public class AllLibraryGamesResponse {
     private AllLibraryGamesResponse.Status status;
 
