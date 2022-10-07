@@ -19,13 +19,17 @@ public class PersonalGameInformation {
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "registeredlibraryaccountid")
     RegisteredLibraryAccount registeredLibraryAccount;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "gameid")
     Game game;
 
+    @Column(name = "creationtimestamp")
     private LocalDateTime creationTimeStamp;
 
+    @Column(name = "updatetimestamp")
     private LocalDateTime updateTimeStamp;
 }

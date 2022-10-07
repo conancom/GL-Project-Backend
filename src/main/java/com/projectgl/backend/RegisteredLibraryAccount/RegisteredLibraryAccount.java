@@ -30,7 +30,7 @@ public class RegisteredLibraryAccount {
     private LocalDateTime updateTimeStamp;
 
     @Column(name = "type")
-    private AccountType accountType;
+    private String accountType;
 
     public enum AccountType {
         STEAM, ORIGIN, UBISOFT, EPIC, GOG

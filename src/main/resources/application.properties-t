@@ -9,6 +9,10 @@ spring.sql.init.platform=postgres
 spring.session.store-type=jdbc
 spring.session.jdbc.initialize-schema=always
 
+# session time in seconds
 server.servlet.session.timeout=20
 
 logging.level.org.springframework=ERROR
+
+# logs the SQL statements
+log4j.logger.org.hibernate.SQL=debug

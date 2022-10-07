@@ -28,16 +28,20 @@ public class Game {
 
     private String information;
 
+    @Column(name = "profileimg")
     private String profileImg;
 
-    private String backgroudImg;
+    @Column(name = "backgroundimg")
+    private String backgroundImg;
 
     @OneToMany
     @JoinColumn(name = "gameid")
     private List<PersonalGameInformation> personalGameInformationList;
 
+    @Column(name = "creationtimestamp")
     private LocalDateTime creationTimeStamp;
 
+    @Column(name = "updatetimestamp")
     private LocalDateTime updateTimeStamp;
 
     public void addPersonalGameInformation(PersonalGameInformation personalGameInformation){

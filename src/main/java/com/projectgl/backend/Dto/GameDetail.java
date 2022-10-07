@@ -1,5 +1,6 @@
 package com.projectgl.backend.Dto;
 
+import com.projectgl.backend.RegisteredLibraryAccount.RegisteredLibraryAccount;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,10 @@ public class GameDetail {
     private String picture_url;
 
     private String banner_url;
+
+    private String libraryName;
+
+    private Long library_id;
 
 }
 

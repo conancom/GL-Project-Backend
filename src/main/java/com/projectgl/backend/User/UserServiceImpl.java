@@ -1,7 +1,6 @@
 package com.projectgl.backend.User;
 
 import com.projectgl.backend.Dto.GameDetail;
-import com.projectgl.backend.Dto.LibraryAccountDetails;
 import com.projectgl.backend.Dto.LoginDto;
 import com.projectgl.backend.Dto.RegisterDto;
 import com.projectgl.backend.PersonalGameInformation.PersonalGameInformation;
@@ -105,24 +104,21 @@ public class UserServiceImpl implements UserService {
         }
         List<RegisteredLibraryAccount> registeredLibraryAccounts = user.get().getRegisteredLibraryAccountList();
         allLibraryGamesResponse = AllLibraryGamesResponse.builder().build();
-        allLibraryGamesResponse.setLibraries(new ArrayList<>());
+        allLibraryGamesResponse.setGameDetails(new ArrayList<>());
         registeredLibraryAccounts.forEach(registeredLibraryAccount -> {
-            LibraryAccountDetails libraryAccountDetails = LibraryAccountDetails.builder().build();
-            libraryAccountDetails.setLibraryName(registeredLibraryAccount.getAccountType());
-            libraryAccountDetails.setLibrary_id(registeredLibraryAccount.getId());
-            libraryAccountDetails.setGameDetails(new ArrayList<>());
-            ArrayList<PersonalGameInformation> personalGameInformations = personalGameInformationService.findPersonalGameInformationByRegisteredLibraryAccount(registeredLibraryAccount);
+            List<PersonalGameInformation> personalGameInformations = registeredLibraryAccount.getPersonalGameInformationList();
             personalGameInformations.forEach(personalGameInformation -> {
-                GameDetail gameDetail = GameDetail.builder().build();
-                gameDetail.setGame_name(personalGameInformation.getGame().getName());
-                gameDetail.setPersonal_game_id(personalGameInformation.getId());
-                gameDetail.setGame_id(personalGameInformation.getGame().getId());
-                gameDetail.setGame_description(personalGameInformation.getGame().getInformation());
-                gameDetail.setPicture_url(personalGameInformation.getGame().getProfileImg());
-                gameDetail.setBanner_url(personalGameInformation.getGame().getBackgroudImg());
-                libraryAccountDetails.getGameDetails().add(gameDetail);
+                GameDetail gameDetail = GameDetail.builder()
+                        .game_name(personalGameInformation.getGame().getName())
+                        .personal_game_id(personalGameInformation.getId())
+                        .game_id(personalGameInformation.getGame().getId())
+                        .game_description(personalGameInformation.getGame().getInformation())
+                        .picture_url(personalGameInformation.getGame().getProfileImg())
+                        .banner_url(personalGameInformation.getGame().getBackgroundImg())
+                        .libraryName(registeredLibraryAccount.getAccountType())
+                        .library_id(registeredLibraryAccount.getId()).build();
+                allLibraryGamesResponse.getGameDetails().add(gameDetail);
             });
-            allLibraryGamesResponse.getLibraries().add(libraryAccountDetails);
         });
         allLibraryGamesResponse.setStatus(AllLibraryGamesResponse.Status.SESSION_KEY_OK);
         return allLibraryGamesResponse;
