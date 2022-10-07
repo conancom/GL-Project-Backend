@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @Getter
 public class LibraryAccountDetails {
 
-    private RegisteredLibraryAccount.AccountType libraryName;
+    private String libraryName;
 
     private Long library_id;
 

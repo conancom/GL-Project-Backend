@@ -32,10 +32,6 @@ public class RegisteredLibraryAccount {
     @Column(name = "type")
     private String accountType;
 
-    public enum AccountType {
-        STEAM, ORIGIN, UBISOFT, EPIC, GOG
-    }
-
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userid")

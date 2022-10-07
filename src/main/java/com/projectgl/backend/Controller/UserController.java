@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @CrossOrigin
 @RestController
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/api/v1/register")
-    public RegisterResponse registerNewUser(@RequestBody RegisterDto registerDto, HttpServletRequest request) {
+    public RegisterResponse registerNewUser(@Valid @RequestBody RegisterDto registerDto, HttpServletRequest request) {
         if (userService.userExistsUsername(registerDto)) {
             return RegisterResponse.builder().username(registerDto.getUsername()).status(RegisterResponse.Status.DUPLICATE_USERNAME).build();
         }
@@ -33,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping("/api/v1/login")
-    public LoginResponse loginUser(@RequestBody LoginDto loginDto, HttpServletRequest request) {
-         return userService.loginUser(loginDto, request);
+    public LoginResponse loginUser(@Valid @RequestBody LoginDto loginDto, HttpServletRequest request) {
+        return userService.loginUser(loginDto, request);
     }
 }
