@@ -120,6 +120,7 @@ public class UserServiceImpl implements UserService {
                 allLibraryGamesResponse.getGameDetails().add(gameDetail);
             });
         });
+        allLibraryGamesResponse.getGameDetails().sort(Comparator.comparing(GameDetail::getGame_name));
         allLibraryGamesResponse.setStatus(AllLibraryGamesResponse.Status.SESSION_KEY_OK);
         return allLibraryGamesResponse;
     }
