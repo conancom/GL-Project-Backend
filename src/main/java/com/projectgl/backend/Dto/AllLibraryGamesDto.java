@@ -1,13 +1,14 @@
 package com.projectgl.backend.Dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Builder
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class AllLibraryGamesDto {
 
     private String session_id;
+
 }

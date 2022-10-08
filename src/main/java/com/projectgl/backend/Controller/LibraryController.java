@@ -5,14 +5,12 @@ import com.projectgl.backend.RegisteredLibraryAccount.RegisteredLibraryAccountSe
 import com.projectgl.backend.Response.AllLibraryGamesResponse;
 import com.projectgl.backend.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 @CrossOrigin
 @RestController
@@ -28,8 +26,8 @@ public class LibraryController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/api/v1/all-library-games", consumes= MediaType.APPLICATION_JSON_VALUE)
-    public AllLibraryGamesResponse getAllLibraryGames(@Valid @RequestBody AllLibraryGamesDto allLibraryGamesDto, HttpServletRequest request) {
+    @PostMapping( "/api/v1/all-library-games")
+    public AllLibraryGamesResponse getAllLibraryGames(@RequestBody AllLibraryGamesDto allLibraryGamesDto, HttpServletRequest request) {
         Object userId = request.getSession().getAttribute(allLibraryGamesDto.getSession_id());
         if (userId == null) {
             return AllLibraryGamesResponse.builder().status(AllLibraryGamesResponse.Status.SESSION_EXPIRED).build();
