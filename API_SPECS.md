@@ -33,7 +33,7 @@
   "session_id": "layusd5652mnzxbc3viggweyutabh8974"
 }
 ```
-#### [POST] /api/v1/all-library-games
+#### [POST] /api/v1/all-library-games/alphabetically
 ```json
 {
   "session_id": "layusd5652mnzxbc3viggweyutabh8974"
@@ -77,18 +77,69 @@
   ]
 }
 ```
-#### [POST] /api/v1/library-games
+#### [POST] /api/v1/library-games/alphabetically
 ```json
 {
-  "library_id": "8ysjasdhasbd8o7sy87tg324",
-  "session_id": "layusd5652mnzxbc3viggweyutabh8974"
+  "session_id": "layusd5652mnzxbc3viggweyutabh8974",
+  "library_id": "8ysjasdhasbd8o7sy87tg324"
+}
+```
+##### Response
+```json
+{
+  "status": "SESSION_KEY_OK", //SESSION_EXPIRED, USER_DOES_NOT_EXIST
+  "games": [
+    {
+      "game_name": "Minecraft",
+      "game_id": "938isjdfjghshdasd",
+      "personal_game_id": "asdihasidhasd",
+      "game_description": "Minecraft, what else is there to say!",
+      "picture_url": "https//pic.com",
+      "banner_url": "https//pic.com",
+      "library_name": "STEAM", //UBISOFT, EPIC, ETC
+      "library_id": "8ysjasdhasbd8o7sy87tg324"
+    },
+    {
+      "game_name": "Naraka",
+      "game_id": "kajd89a7sdkjabsdiuas",
+      "personal_game_id": "asdihasidhasd",
+      "game_description": "Minecraft, what else is there to say!",
+      "picture_url": "https//pic.com",
+      "banner_url": "https//pic.com",
+      "library_name": "STEAM", //UBISOFT, EPIC, ETC
+      "library_id": "askdjhna8907dajbnsaasd"
+    },
+    {
+      "game_name": "Overwatch",
+      "game_id": "0984oksjmndfj8asd",
+      "personal_game_id": "asdihasidhasd",
+      "game_description": "This is a good game made by good ppl",
+      "picture_url": "https//pic.com",
+      "banner_url": "https//pic.com",
+      "library_name": "STEAM", //UBISOFT, EPIC, ETC
+      "library_id": "askdjhna8907dajbnsaasd"
+    }
+  ]
 }
 ```
 #### [POST] /api/v1/game-info
 ```json
 {
+  "session_id": "layusd5652mnzxbc3viggweyutabh8974",
+  "game_id": "asd80973jklhf897yhnbjkbufygdfa"
+}
+```
+##### Response
+```json
+{
   "status": "SESSION_KEY_OK", //SESSION_EXPIRED, USER_DOES_NOT_EXIST
-  "game_id": "asd80973jklhf897yhnbjkbufygdfa",
-  "session_id": "layusd5652mnzxbc3viggweyutabh8974"
+  "game_name": "Minecraft",
+  "game_id": "938isjdfjghshdasd",
+  "personal_game_id": "asd80973jklhf897yhnbjkbufygdfa",
+  "game_description": "Minecraft, what else is there to say!",
+  "picture_url": "https//pic.com",
+  "banner_url": "https//pic.com",
+  "library_name": "STEAM", //UBISOFT, EPIC, ETC
+  "library_id": "8ysjasdhasbd8o7sy87tg324"
 }
 ```

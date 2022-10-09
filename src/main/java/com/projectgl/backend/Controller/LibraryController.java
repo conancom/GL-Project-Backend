@@ -26,7 +26,7 @@ public class LibraryController {
         this.userService = userService;
     }
 
-    @PostMapping( "/api/v1/all-library-games")
+    @PostMapping( "/api/v1/all-library-games/alphabetically")
     public AllLibraryGamesResponse getAllLibraryGames(@RequestBody AllLibraryGamesDto allLibraryGamesDto, HttpServletRequest request) {
         Object userId = request.getSession().getAttribute(allLibraryGamesDto.getSession_id());
         if (userId == null) {
