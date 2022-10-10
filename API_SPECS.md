@@ -87,7 +87,7 @@
 ##### Response
 ```json
 {
-  "status": "SESSION_KEY_OK", //SESSION_EXPIRED, USER_DOES_NOT_EXIST
+  "status": "SESSION_KEY_OK", //SESSION_EXPIRED, USER_DOES_NOT_EXIST, NO_ACCOUNT_FOUND, ACCOUNT_ID_MISSMATCH
   "games": [
     {
       "game_name": "Minecraft",
