@@ -11,11 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-<<<<<<< HEAD
-=======
-import javax.validation.Valid;
-import java.util.Optional;
->>>>>>> b179c6c (branch fix)
 
 @CrossOrigin
 @RestController
