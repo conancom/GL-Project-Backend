@@ -6,7 +6,8 @@ import com.projectgl.backend.Dto.RegisterDto;
 import com.projectgl.backend.PersonalGameInformation.PersonalGameInformation;
 import com.projectgl.backend.PersonalGameInformation.PersonalGameInformationService;
 import com.projectgl.backend.RegisteredLibraryAccount.RegisteredLibraryAccount;
-import com.projectgl.backend.Response.AllLibraryGamesResponse;
+import com.projectgl.backend.RegisteredLibraryAccount.RegisteredLibraryAccountService;
+import com.projectgl.backend.Response.LibraryGamesResponse;
 import com.projectgl.backend.Response.LoginResponse;
 import com.projectgl.backend.Response.RegisterResponse;
 import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
@@ -26,14 +27,18 @@ import java.util.regex.Pattern;
 public class UserServiceImpl implements UserService {
 
     final public UserRepository userRepository;
+
     final public EntityManager entityManager;
+
+    final public RegisteredLibraryAccountService registeredLibraryAccountService;
 
     final PersonalGameInformationService personalGameInformationService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, EntityManager entityManager, PersonalGameInformationService personalGameInformationService) {
+    public UserServiceImpl(UserRepository userRepository, EntityManager entityManager, RegisteredLibraryAccountService registeredLibraryAccountService, PersonalGameInformationService personalGameInformationService) {
         this.userRepository = userRepository;
         this.entityManager = entityManager;
+        this.registeredLibraryAccountService = registeredLibraryAccountService;
         this.personalGameInformationService = personalGameInformationService;
     }
 
@@ -95,16 +100,16 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId);
     }
 
-    public AllLibraryGamesResponse createAllLibraryAccountResponse(Long userId) {
+    public LibraryGamesResponse createAllLibraryAccountResponse(Long userId) {
         Optional<User> user = userRepository.findById(userId);
-        AllLibraryGamesResponse allLibraryGamesResponse;
+        LibraryGamesResponse libraryGamesResponse;
         if (user.isEmpty()) {
-            allLibraryGamesResponse = AllLibraryGamesResponse.builder().status(AllLibraryGamesResponse.Status.USER_DOES_NOT_EXIST).build();
-            return allLibraryGamesResponse;
+            libraryGamesResponse = LibraryGamesResponse.builder().status(LibraryGamesResponse.Status.USER_DOES_NOT_EXIST).build();
+            return libraryGamesResponse;
         }
         List<RegisteredLibraryAccount> registeredLibraryAccounts = user.get().getRegisteredLibraryAccountList();
-        allLibraryGamesResponse = AllLibraryGamesResponse.builder().build();
-        allLibraryGamesResponse.setGameDetails(new ArrayList<>());
+        libraryGamesResponse = LibraryGamesResponse.builder().build();
+        libraryGamesResponse.setGameDetails(new ArrayList<>());
         registeredLibraryAccounts.forEach(registeredLibraryAccount -> {
             List<PersonalGameInformation> personalGameInformations = registeredLibraryAccount.getPersonalGameInformationList();
             personalGameInformations.forEach(personalGameInformation -> {
@@ -117,12 +122,12 @@ public class UserServiceImpl implements UserService {
                         .banner_url(personalGameInformation.getGame().getBackgroundImg())
                         .libraryName(registeredLibraryAccount.getAccountType())
                         .library_id(registeredLibraryAccount.getId()).build();
-                allLibraryGamesResponse.getGameDetails().add(gameDetail);
+                libraryGamesResponse.getGameDetails().add(gameDetail);
             });
         });
-        allLibraryGamesResponse.getGameDetails().sort(Comparator.comparing(GameDetail::getGame_name));
-        allLibraryGamesResponse.setStatus(AllLibraryGamesResponse.Status.SESSION_KEY_OK);
-        return allLibraryGamesResponse;
+        libraryGamesResponse.getGameDetails().sort(Comparator.comparing(GameDetail::getGame_name));
+        libraryGamesResponse.setStatus(LibraryGamesResponse.Status.SESSION_KEY_OK);
+        return libraryGamesResponse;
     }
 
     public static String createToken() {

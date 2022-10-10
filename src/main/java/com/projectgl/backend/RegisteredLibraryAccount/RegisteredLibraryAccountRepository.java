@@ -8,4 +8,5 @@ import java.util.ArrayList;
 @Repository
 public interface RegisteredLibraryAccountRepository extends JpaRepository<RegisteredLibraryAccount, Long> {
     ArrayList<RegisteredLibraryAccount> getRegisteredLibraryAccountsByUser(User user);
+
 }

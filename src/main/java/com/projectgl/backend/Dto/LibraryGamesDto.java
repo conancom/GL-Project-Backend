@@ -7,9 +7,10 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AllLibraryGamesDto {
+public class LibraryGamesDto {
 
     private String session_id;
 
+    private long library_id;
 
 }

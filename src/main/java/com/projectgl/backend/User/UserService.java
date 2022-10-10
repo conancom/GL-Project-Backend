@@ -2,7 +2,7 @@ package com.projectgl.backend.User;
 
 import com.projectgl.backend.Dto.LoginDto;
 import com.projectgl.backend.Dto.RegisterDto;
-import com.projectgl.backend.Response.AllLibraryGamesResponse;
+import com.projectgl.backend.Response.LibraryGamesResponse;
 import com.projectgl.backend.Response.LoginResponse;
 import com.projectgl.backend.Response.RegisterResponse;
 
@@ -21,5 +21,6 @@ public interface UserService {
 
     public Optional<User> findUserbyId(long userId);
 
-    public AllLibraryGamesResponse createAllLibraryAccountResponse(Long userId);
+    public LibraryGamesResponse createAllLibraryAccountResponse(Long userId);
+
 }
