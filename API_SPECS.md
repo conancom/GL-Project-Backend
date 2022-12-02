@@ -144,3 +144,20 @@
   "library_id": 98302723907234
 }
 ```
+#### [POST] /api/v1/register-library
+```json
+{
+  "session_id": "layusd5652mnzxbc3viggweyutabh8974",
+  "library_type": STEAM,
+  "library_api_key": "582941298361832"
+}
+```
+##### Response
+```json
+{
+  "status": "SESSION_KEY_OK",
+  //SESSION_EXPIRED, USER_DOES_NOT_EXIST
+  "library_key_status": "SESSION_KEY_OK",
+  //SESSION_EXPIRED, USER_DOES_NOT_EXIST
+}
+```
