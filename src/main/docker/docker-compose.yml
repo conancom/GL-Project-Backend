@@ -4,7 +4,7 @@ services:
   app:
     image: 'backend:latest'
     ports:
-      - "56808:56808"
+      - "8080:8080"
     build:
       context: .
     container_name: app
