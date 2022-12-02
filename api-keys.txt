@@ -1,0 +1,5 @@
+Steam = FF39BF9B9F79359FF343088F387F9206
+
+https://api-docs.igdb.com/#about -> Twitch:
+	Client ID: 527btjgrr29t3u6dj011v4e2g7ue1l
+	Client Secret: kxkjgmmxz8z0kxoe1zh0v456prm1tu
