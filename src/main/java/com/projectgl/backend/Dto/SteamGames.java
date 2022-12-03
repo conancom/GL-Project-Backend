@@ -7,8 +7,8 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AllLibraryGamesDto {
+public class SteamGames {
 
-    private String session_id;
+    private SteamResponse response;
 
 }

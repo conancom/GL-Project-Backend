@@ -54,8 +54,8 @@ CREATE INDEX user_username_idx ON public."user" USING btree (username);
 -- DROP TABLE public.registered_library_account;
 
 CREATE TABLE public.registered_library_account (
-	id int8 NOT NULL,
-	"type" public.accounttype NOT NULL,
+	id int8 NOT NULL GENERATED ALWAYS AS IDENTITY,
+	"type" varchar NOT NULL,
 	userid int8 NOT NULL,
 	apikey varchar NULL,
 	creationtimestamp timestamp NOT NULL,
@@ -71,7 +71,7 @@ CREATE INDEX registered_library_account_updatetimestamp_idx ON public.registered
 -- DROP TABLE public.personalgameinformation;
 
 CREATE TABLE public.personalgameinformation (
-	id int8 NOT NULL,
+	id int8 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	registeredlibraryaccountid int8 NOT NULL,
 	gameid int8 NOT NULL,
 	creationtimestamp timestamp NOT NULL,

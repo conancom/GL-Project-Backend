@@ -18,6 +18,7 @@ public class RegisteredLibraryAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "apikey")
@@ -33,7 +34,7 @@ public class RegisteredLibraryAccount {
     private String accountType;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "userid")
     private User user;
 

@@ -17,6 +17,6 @@ public class LibraryGamesResponse {
     private ArrayList<GameDetail> gameDetails;
 
     public enum Status {
-        SESSION_KEY_OK, USER_DOES_NOT_EXIST, SESSION_EXPIRED, NO_ACCOUNT_FOUND, ACCOUNT_ID_MISSMATCH
+        SESSION_KEY_OK, USER_DOES_NOT_EXIST, SESSION_EXPIRED, NO_ACCOUNT_FOUND, ACCOUNT_ID_MISSMATCH, STEAM_ACCOUNT_NOT_FOUND
     }
 }
