@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String token = createToken();
-        request.getSession().setAttribute(token, user.get().getId());
+        request.getSession(true).setAttribute(token, user.get().getId());
         return LoginResponse.builder().username(user.get().getUsername()).status(LoginResponse.Status.SUCCESS).session_id(token).build();
     }
 
