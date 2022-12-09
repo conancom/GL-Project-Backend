@@ -6,9 +6,13 @@ import com.projectgl.backend.Response.LoginResponse;
 import com.projectgl.backend.Response.RegisterResponse;
 import com.projectgl.backend.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @CrossOrigin
@@ -34,7 +38,15 @@ public class UserController {
     }
 
     @PostMapping("/api/v1/login")
-    public LoginResponse loginUser(@Valid @RequestBody LoginDto loginDto, HttpServletRequest request) {
-        return userService.loginUser(loginDto, request);
+    public ResponseEntity<?> loginUser(@Valid @RequestBody LoginDto loginDto, HttpServletRequest request, HttpServletResponse response) {
+        if (request.getParameter("JSESSIONID") != null) {
+            Cookie userCookie = new Cookie("JSESSIONID", request.getParameter("JSESSIONID"));
+            response.addCookie(userCookie);
+        } else {
+            String sessionId = request.getSession().getId();
+            Cookie userCookie = new Cookie("JSESSIONID", sessionId);
+            response.addCookie(userCookie);
+        }
+        return ResponseEntity.ok(userService.loginUser(loginDto, request));
     }
 }

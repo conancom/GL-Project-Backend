@@ -148,7 +148,7 @@
 ```json
 {
   "session_id": "layusd5652mnzxbc3viggweyutabh8974",
-  "library_type": STEAM,
+  "library_type": "STEAM",
   "library_api_key": "582941298361832"
 }
 ```
@@ -159,5 +159,26 @@
   //SESSION_EXPIRED, USER_DOES_NOT_EXIST
   "library_key_status": "SESSION_KEY_OK",
   //SESSION_EXPIRED, USER_DOES_NOT_EXIST
+}
+```
+#### [POST] /api/v1/all-libraries
+```json
+{
+  "session_id": "layusd5652mnzxbc3viggweyutabh8974"
+}
+```
+##### Response
+```json
+{
+  [
+    {
+      "library_type": "STEAM",
+      "library_api_key": "582941298361832"
+    },
+    {
+      "library_type": "BLIZZARD",
+      "library_api_key": "582941298361832"
+    }
+  ]
 }
 ```

@@ -13,7 +13,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.sessionManagement().sessionFixation().none().sessionCreationPolicy(SessionCreationPolicy.NEVER);
+        http.sessionManagement().sessionFixation().none().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
         http.cors().and().csrf().disable();
         return http.build();
     }
