@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.CompletableFuture;
 
@@ -42,7 +43,7 @@ public class LibraryController {
 
     @PostMapping("/api/v1/library-games/alphabetically")
     public LibraryGamesResponse getLibraryGames(@RequestBody LibraryGamesDto libraryGamesDto, HttpServletRequest request) {
-        Object userId = request.getSession().getAttribute(libraryGamesDto.getSession_id());
+        Object userId = request.getSession(false).getAttribute(libraryGamesDto.getSession_id());
         if (userId == null) {
             return LibraryGamesResponse.builder().status(LibraryGamesResponse.Status.SESSION_EXPIRED).build();
         }
@@ -52,7 +53,7 @@ public class LibraryController {
     @Async
     @PostMapping("/api/v1/register-library")
     public CompletableFuture<LibraryRegisterResponse> registerLibrary(@RequestBody LibraryRegisterDto libraryRegisterDto, HttpServletRequest request) {
-        Object userId = request.getSession(true).getAttribute(libraryRegisterDto.getSession_id());
+        Object userId = request.getSession(false).getAttribute(libraryRegisterDto.getSession_id());
         System.out.println(libraryRegisterDto.getSession_id());
         if (userId == null) {
             return CompletableFuture.completedFuture(LibraryRegisterResponse.builder().status(LibraryRegisterResponse.Status.SESSION_EXPIRED).build());
