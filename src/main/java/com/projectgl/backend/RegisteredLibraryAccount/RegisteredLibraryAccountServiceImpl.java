@@ -1,6 +1,7 @@
 package com.projectgl.backend.RegisteredLibraryAccount;
 
 import com.projectgl.backend.Dto.GameDetail;
+import com.projectgl.backend.Dto.LibraryDetail;
 import com.projectgl.backend.Dto.SteamGames;
 import com.projectgl.backend.Game.Game;
 import com.projectgl.backend.Game.GameRepository;
@@ -8,6 +9,7 @@ import com.projectgl.backend.PersonalGameInformation.PersonalGameInformation;
 import com.projectgl.backend.PersonalGameInformation.PersonalGameInformationRepository;
 import com.projectgl.backend.Response.LibraryGamesResponse;
 import com.projectgl.backend.Response.LibraryRegisterResponse;
+import com.projectgl.backend.Response.LibraryResponse;
 import com.projectgl.backend.User.User;
 import com.projectgl.backend.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,5 +142,28 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
                 .status(LibraryRegisterResponse.Status.SESSION_KEY_OK)
                 .library_key_status(LibraryRegisterResponse.Status.ADDED_SUCCESSFUL)
                 .build();
+    }
+
+    public LibraryResponse getAllLibraryAccounts(long userId) {
+        Optional<User> optUser = userRepository.findById(userId);
+
+        if (optUser.isEmpty()){
+            return LibraryResponse.builder()
+                    .status(LibraryResponse.Status.SESSION_KEY_OK)
+                    .build();
+        }
+        User user = optUser.get();
+        LibraryResponse libraryResponse = LibraryResponse.builder()
+                .status(LibraryResponse.Status.SESSION_KEY_OK)
+                .libraries(new ArrayList<>())
+                .build();
+        user.getRegisteredLibraryAccountList().forEach(registeredLibraryAccount -> {
+            LibraryDetail libraryDetail = LibraryDetail.builder()
+                    .library_type(registeredLibraryAccount.getAccountType())
+                    .library_id(registeredLibraryAccount.getId())
+                    .build();
+            libraryResponse.getLibraries().add(libraryDetail);
+        });
+        return libraryResponse;
     }
 }

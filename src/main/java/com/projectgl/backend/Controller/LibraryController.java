@@ -1,5 +1,6 @@
 package com.projectgl.backend.Controller;
 
+import com.projectgl.backend.Dto.AllLibraryDto;
 import com.projectgl.backend.Dto.AllLibraryGamesDto;
 import com.projectgl.backend.Dto.LibraryGamesDto;
 import com.projectgl.backend.Dto.LibraryRegisterDto;
@@ -63,6 +64,16 @@ public class LibraryController {
         long userId = sessionService.getUserId(libraryRegisterDto.getSession_id());
         sessionService.refreshSession(libraryRegisterDto.getSession_id());
         return ResponseEntity.ok(registeredLibraryAccountService.registerLibraryAccount(userId, libraryRegisterDto.getLibrary_type(), libraryRegisterDto.getLibrary_api_key()));
+    }
+
+    @PostMapping("/api/v1/all-libraries")
+    public ResponseEntity<?> getLibraries(@RequestBody AllLibraryDto allLibraryDto, HttpServletRequest request, HttpServletResponse response) {
+        if(!sessionService.validateSession(allLibraryDto.getSession_id())){
+            return ResponseEntity.ok(LibraryRegisterResponse.builder().status(LibraryRegisterResponse.Status.SESSION_EXPIRED).build());
+        }
+        long userId = sessionService.getUserId(allLibraryDto.getSession_id());
+        sessionService.refreshSession(allLibraryDto.getSession_id());
+        return ResponseEntity.ok(registeredLibraryAccountService.getAllLibraryAccounts(userId));
     }
 
 }

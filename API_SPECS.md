@@ -170,14 +170,15 @@
 ##### Response
 ```json
 {
-  [
+  "status": "SESSION_KEY_OK",
+  "libraries": [
     {
       "library_type": "STEAM",
-      "library_api_key": "582941298361832"
+      "library_id": 98302723907234
     },
     {
-      "library_type": "BLIZZARD",
-      "library_api_key": "582941298361832"
+      "library_type": "GOG",
+      "library_id": 4518741521
     }
   ]
 }
