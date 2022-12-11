@@ -82,3 +82,21 @@ CREATE TABLE public.personalgameinformation (
 );
 CREATE INDEX personalgameinformation_creationtimestamp_idx ON public.personalgameinformation USING btree (creationtimestamp);
 CREATE INDEX personalgameinformation_updatetimestamp_idx ON public.personalgameinformation USING btree (updatetimestamp);
+
+-- Drop table
+
+-- DROP TABLE public.session;
+
+CREATE TABLE public."session" (
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
+    sessionid varchar NOT NULL,
+    userid bigint NOT NULL,
+    creationtimestamp timestamp NOT NULL,
+    updatetimestamp timestamp NOT NULL,
+    expirationtimestamp timestamp NOT NULL,
+    CONSTRAINT session_pk PRIMARY KEY (id)
+);
+CREATE INDEX session_sessionid_idx ON public."session" (sessionid);
+CREATE INDEX session_creationtimestamp_idx ON public."session" (creationtimestamp);
+CREATE INDEX session_updatetimestamp_idx ON public."session" (updatetimestamp);
+CREATE INDEX session_expirationtimestamp_idx ON public."session" (expirationtimestamp);

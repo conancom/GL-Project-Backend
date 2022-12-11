@@ -10,6 +10,7 @@ import com.projectgl.backend.RegisteredLibraryAccount.RegisteredLibraryAccountSe
 import com.projectgl.backend.Response.LibraryGamesResponse;
 import com.projectgl.backend.Response.LoginResponse;
 import com.projectgl.backend.Response.RegisterResponse;
+import com.projectgl.backend.Session.SessionService;
 import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
 import org.bouncycastle.crypto.params.Argon2Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,16 @@ public class UserServiceImpl implements UserService {
 
     final PersonalGameInformationService personalGameInformationService;
 
+    final public SessionService sessionService;
+
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, EntityManager entityManager, RegisteredLibraryAccountService registeredLibraryAccountService, PersonalGameInformationService personalGameInformationService) {
+    public UserServiceImpl(UserRepository userRepository, EntityManager entityManager, RegisteredLibraryAccountService registeredLibraryAccountService, PersonalGameInformationService personalGameInformationService, SessionService sessionService) {
         this.userRepository = userRepository;
         this.entityManager = entityManager;
         this.registeredLibraryAccountService = registeredLibraryAccountService;
         this.personalGameInformationService = personalGameInformationService;
+        this.sessionService = sessionService;
     }
 
     private static byte[] generateSalt16Byte() {
@@ -92,7 +97,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String token = createToken();
-        request.getSession(true).setAttribute(token, user.get().getId());
+        sessionService.createSession(token, user.get().getId());
         return LoginResponse.builder().username(user.get().getUsername()).status(LoginResponse.Status.SUCCESS).session_id(token).build();
     }
 

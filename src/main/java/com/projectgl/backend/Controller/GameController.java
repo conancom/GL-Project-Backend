@@ -3,6 +3,7 @@ package com.projectgl.backend.Controller;
 import com.projectgl.backend.Dto.GameDto;
 import com.projectgl.backend.PersonalGameInformation.PersonalGameInformationService;
 import com.projectgl.backend.Response.GameResponse;
+import com.projectgl.backend.Session.SessionService;
 import com.projectgl.backend.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,19 +21,24 @@ public class GameController {
 
     final public PersonalGameInformationService personalGameInformationService;
 
+    final public SessionService sessionService;
+
     @Autowired
-    public GameController(UserService userService, PersonalGameInformationService personalGameInformationService) {
+    public GameController(UserService userService, PersonalGameInformationService personalGameInformationService, SessionService sessionService) {
         this.userService = userService;
         this.personalGameInformationService = personalGameInformationService;
+        this.sessionService = sessionService;
     }
 
     @PostMapping("api/v1/game-info")
     public GameResponse getGameInformation(@RequestBody GameDto gameDto, HttpServletRequest request){
-        Object userId = request.getSession().getAttribute(gameDto.getSession_id());
-        if (userId == null) {
+
+        if(!sessionService.validateSession(gameDto.getSession_id())){
             return GameResponse.builder().status(GameResponse.Status.SESSION_EXPIRED).build();
         }
-        return personalGameInformationService.createGameResponse((long) userId, gameDto.getGame_id());
+        long userId = sessionService.getUserId(gameDto.getSession_id());
+        sessionService.refreshSession(gameDto.getSession_id());
+        return personalGameInformationService.createGameResponse(userId, gameDto.getGame_id());
     }
 
 }
