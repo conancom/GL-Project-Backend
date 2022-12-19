@@ -56,7 +56,7 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
             return libraryGamesResponse;
         }
         List<PersonalGameInformation> personalGameInformations = registeredLibraryAccount.getPersonalGameInformationList();
-        libraryGamesResponse.setGameDetails(new ArrayList<>());
+        libraryGamesResponse.setGames(new ArrayList<>());
         personalGameInformations.forEach(personalGameInformation -> {
             GameDetail gameDetail = GameDetail.builder()
                     .game_name(personalGameInformation.getGame().getName())
@@ -65,11 +65,11 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
                     .game_description(personalGameInformation.getGame().getInformation())
                     .picture_url(personalGameInformation.getGame().getProfileImg())
                     .banner_url(personalGameInformation.getGame().getBackgroundImg())
-                    .libraryName(registeredLibraryAccount.getAccountType())
+                    .library_name(registeredLibraryAccount.getAccountType())
                     .library_id(registeredLibraryAccount.getId()).build();
-            libraryGamesResponse.getGameDetails().add(gameDetail);
+            libraryGamesResponse.getGames().add(gameDetail);
         });
-        libraryGamesResponse.getGameDetails().sort(Comparator.comparing(GameDetail::getGame_name));
+        libraryGamesResponse.getGames().sort(Comparator.comparing(GameDetail::getGame_name));
         libraryGamesResponse.setStatus(LibraryGamesResponse.Status.SESSION_KEY_OK);
         return libraryGamesResponse;
     }

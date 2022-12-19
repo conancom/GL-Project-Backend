@@ -1,9 +1,7 @@
 package com.projectgl.backend.PersonalGameInformation;
 
-import com.projectgl.backend.Game.Game;
 import com.projectgl.backend.RegisteredLibraryAccount.RegisteredLibraryAccount;
 import com.projectgl.backend.Response.GameResponse;
-import com.projectgl.backend.Response.LibraryGamesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +42,7 @@ public class PersonalGameInformationServiceImpl implements PersonalGameInformati
                 .game_description(personalGameInformation.getGame().getInformation())
                 .picture_url(personalGameInformation.getGame().getProfileImg())
                 .banner_url(personalGameInformation.getGame().getBackgroundImg())
-                .libraryName(personalGameInformation.getRegisteredLibraryAccount().getAccountType())
+                .library_name(personalGameInformation.getRegisteredLibraryAccount().getAccountType())
                 .library_id(personalGameInformation.getRegisteredLibraryAccount().getId())
                 .status(GameResponse.Status.SESSION_KEY_OK).build();
     }

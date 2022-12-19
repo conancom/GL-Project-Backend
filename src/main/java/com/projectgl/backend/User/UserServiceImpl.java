@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
         }
         List<RegisteredLibraryAccount> registeredLibraryAccounts = user.get().getRegisteredLibraryAccountList();
         libraryGamesResponse = LibraryGamesResponse.builder().build();
-        libraryGamesResponse.setGameDetails(new ArrayList<>());
+        libraryGamesResponse.setGames(new ArrayList<>());
         registeredLibraryAccounts.forEach(registeredLibraryAccount -> {
             List<PersonalGameInformation> personalGameInformations = registeredLibraryAccount.getPersonalGameInformationList();
             personalGameInformations.forEach(personalGameInformation -> {
@@ -125,12 +125,12 @@ public class UserServiceImpl implements UserService {
                         .game_description(personalGameInformation.getGame().getInformation())
                         .picture_url(personalGameInformation.getGame().getProfileImg())
                         .banner_url(personalGameInformation.getGame().getBackgroundImg())
-                        .libraryName(registeredLibraryAccount.getAccountType())
+                        .library_name(registeredLibraryAccount.getAccountType())
                         .library_id(registeredLibraryAccount.getId()).build();
-                libraryGamesResponse.getGameDetails().add(gameDetail);
+                libraryGamesResponse.getGames().add(gameDetail);
             });
         });
-        libraryGamesResponse.getGameDetails().sort(Comparator.comparing(GameDetail::getGame_name));
+        libraryGamesResponse.getGames().sort(Comparator.comparing(GameDetail::getGame_name));
         libraryGamesResponse.setStatus(LibraryGamesResponse.Status.SESSION_KEY_OK);
         return libraryGamesResponse;
     }

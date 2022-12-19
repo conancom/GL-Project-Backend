@@ -23,7 +23,7 @@ public class GameResponse {
 
     private String banner_url;
 
-    private String libraryName;
+    private String library_name;
 
     private Long library_id;
 

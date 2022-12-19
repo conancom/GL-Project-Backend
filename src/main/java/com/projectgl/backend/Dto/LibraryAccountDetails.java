@@ -1,6 +1,5 @@
 package com.projectgl.backend.Dto;
 
-import com.projectgl.backend.RegisteredLibraryAccount.RegisteredLibraryAccount;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 @Getter
 public class LibraryAccountDetails {
 
-    private String libraryName;
+    private String library_name;
 
     private Long library_id;
 
