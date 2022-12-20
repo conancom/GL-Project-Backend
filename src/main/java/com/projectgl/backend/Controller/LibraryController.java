@@ -7,6 +7,7 @@ import com.projectgl.backend.Dto.LibraryRegisterDto;
 import com.projectgl.backend.RegisteredLibraryAccount.RegisteredLibraryAccountService;
 import com.projectgl.backend.Response.LibraryGamesResponse;
 import com.projectgl.backend.Response.LibraryRegisterResponse;
+import com.projectgl.backend.Response.LibraryResponse;
 import com.projectgl.backend.Session.SessionService;
 import com.projectgl.backend.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,27 +38,27 @@ public class LibraryController {
     }
 
     @PostMapping("/api/v1/all-library-games/alphabetically")
-    public LibraryGamesResponse getAllLibraryGames(@RequestBody AllLibraryGamesDto allLibraryGamesDto) {
+    public ResponseEntity<LibraryGamesResponse> getAllLibraryGames(@RequestBody AllLibraryGamesDto allLibraryGamesDto) {
         if(!sessionService.validateSession(allLibraryGamesDto.getSession_id())){
-            return LibraryGamesResponse.builder().status(LibraryGamesResponse.Status.SESSION_EXPIRED).build();
+            return ResponseEntity.ok(LibraryGamesResponse.builder().status(LibraryGamesResponse.Status.SESSION_EXPIRED).build());
         }
         long userId = sessionService.getUserId(allLibraryGamesDto.getSession_id());
         sessionService.refreshSession(allLibraryGamesDto.getSession_id());
-        return userService.createAllLibraryAccountResponse(userId);
+        return ResponseEntity.ok(userService.createAllLibraryAccountResponse(userId));
     }
 
     @PostMapping("/api/v1/library-games/alphabetically")
-    public LibraryGamesResponse getLibraryGames(@RequestBody LibraryGamesDto libraryGamesDto) {
+    public ResponseEntity<LibraryGamesResponse> getLibraryGames(@RequestBody LibraryGamesDto libraryGamesDto) {
         if(!sessionService.validateSession(libraryGamesDto.getSession_id())){
-            return LibraryGamesResponse.builder().status(LibraryGamesResponse.Status.SESSION_EXPIRED).build();
+            return ResponseEntity.ok(LibraryGamesResponse.builder().status(LibraryGamesResponse.Status.SESSION_EXPIRED).build());
         }
         long userId = sessionService.getUserId(libraryGamesDto.getSession_id());
         sessionService.refreshSession(libraryGamesDto.getSession_id());
-        return registeredLibraryAccountService.createLibraryAccountResponse(userId, libraryGamesDto.getLibrary_id());
+        return ResponseEntity.ok(registeredLibraryAccountService.createLibraryAccountResponse(userId, libraryGamesDto.getLibrary_id()));
     }
 
     @PostMapping("/api/v1/register-library")
-    public ResponseEntity<?> registerLibrary(@RequestBody LibraryRegisterDto libraryRegisterDto, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<LibraryRegisterResponse> registerLibrary(@RequestBody LibraryRegisterDto libraryRegisterDto, HttpServletRequest request, HttpServletResponse response) {
         if(!sessionService.validateSession(libraryRegisterDto.getSession_id())){
             return ResponseEntity.ok(LibraryRegisterResponse.builder().status(LibraryRegisterResponse.Status.SESSION_EXPIRED).build());
         }
@@ -67,9 +68,9 @@ public class LibraryController {
     }
 
     @PostMapping("/api/v1/all-libraries")
-    public ResponseEntity<?> getLibraries(@RequestBody AllLibraryDto allLibraryDto, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<LibraryResponse> getLibraries(@RequestBody AllLibraryDto allLibraryDto, HttpServletRequest request, HttpServletResponse response) {
         if(!sessionService.validateSession(allLibraryDto.getSession_id())){
-            return ResponseEntity.ok(LibraryRegisterResponse.builder().status(LibraryRegisterResponse.Status.SESSION_EXPIRED).build());
+            return ResponseEntity.ok(LibraryResponse.builder().status(LibraryResponse.Status.SESSION_EXPIRED).build());
         }
         long userId = sessionService.getUserId(allLibraryDto.getSession_id());
         sessionService.refreshSession(allLibraryDto.getSession_id());
