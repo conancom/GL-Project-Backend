@@ -17,7 +17,13 @@ public class GameResponse {
 
     private Long game_id;
 
-    private String game_description;
+    private String summary;
+
+    private String storyline;
+
+    private double rating;
+
+    private int first_release_date;
 
     private String picture_url;
 

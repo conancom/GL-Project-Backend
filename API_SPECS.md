@@ -48,7 +48,10 @@
       "game_name": "Minecraft",
       "game_id": 298365685234,
       "personal_game_id": "asdihasidhasd",
-      "game_description": "Minecraft, what else is there to say!",
+      "summary": "game description bla bla",
+      "storyline": "sample story line can be null tho", 
+      "rating" : 97.11564, 
+      "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
       "library_name": "STEAM", //UBISOFT, EPIC, ETC
@@ -58,7 +61,10 @@
       "game_name": "Naraka",
       "game_id": 7863468523,
       "personal_game_id": "asdihasidhasd",
-      "game_description": "Minecraft, what else is there to say!",
+      "summary": "game description bla bla",
+      "storyline": "sample story line can be null tho",
+      "rating" : 97.11564,
+      "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
       "library_name": "STEAM", //UBISOFT, EPIC, ETC
@@ -68,7 +74,10 @@
       "game_name": "Overwatch",
       "game_id": 786238528364,
       "personal_game_id": "asdihasidhasd",
-      "game_description": "This is a good game made by good ppl",
+      "summary": "game description bla bla",
+      "storyline": "sample story line can be null tho",
+      "rating" : 97.11564,
+      "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
       "library_name": "GOG", //UBISOFT, EPIC, ETC
@@ -93,7 +102,10 @@
       "game_name": "Minecraft",
       "game_id": 9186452678492,
       "personal_game_id": "asdihasidhasd",
-      "game_description": "Minecraft, what else is there to say!",
+      "summary": "game description bla bla",
+      "storyline": "sample story line can be null tho",
+      "rating" : 97.11564,
+      "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
       "library_name": "STEAM", //UBISOFT, EPIC, ETC
@@ -103,7 +115,10 @@
       "game_name": "Naraka",
       "game_id": 12731852316,
       "personal_game_id": "asdihasidhasd",
-      "game_description": "Minecraft, what else is there to say!",
+      "summary": "game description bla bla",
+      "storyline": "sample story line can be null tho",
+      "rating" : 97.11564,
+      "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
       "library_name": "STEAM", //UBISOFT, EPIC, ETC
@@ -113,7 +128,10 @@
       "game_name": "Overwatch",
       "game_id": 1298298365298,
       "personal_game_id": "asdihasidhasd",
-      "game_description": "This is a good game made by good ppl",
+      "summary": "game description bla bla",
+      "storyline": "sample story line can be null tho",
+      "rating" : 97.11564,
+      "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
       "library_name": "STEAM", //UBISOFT, EPIC, ETC
@@ -137,7 +155,10 @@
   "game_name": "Minecraft",
   "game_id": 582941298361832,
   "personal_game_id": "asd80973jklhf897yhnbjkbufygdfa",
-  "game_description": "Minecraft, what else is there to say!",
+  "summary": "game description bla bla",
+  "storyline": "sample story line can be null tho",
+  "rating" : 97.11564,
+  "first_release_date": 1897651321, //UNIX TIME STAMP
   "picture_url": "https//pic.com",
   "banner_url": "https//pic.com",
   "library_name": "STEAM", //UBISOFT, EPIC, ETC

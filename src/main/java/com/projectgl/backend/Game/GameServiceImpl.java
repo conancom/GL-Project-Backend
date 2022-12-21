@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
@@ -24,11 +25,11 @@ public class GameServiceImpl implements GameService {
 
     }
 
-    public String fetchGame(String gameName) {
+    public Game fetchGame(String gameName) {
         return getGameInformationFromIgdb(gameName);
     }
 
-    private String getGameInformationFromIgdb(String gameName){
+    private Game getGameInformationFromIgdb(String gameName){
         final String authuri = String.format("https://id.twitch.tv/oauth2/token?client_id=%s&client_secret=%s&grant_type=client_credentials", ClientID, ClientSecret);
         RestTemplate restTemplateAuth = new RestTemplate();
 
@@ -43,13 +44,21 @@ public class GameServiceImpl implements GameService {
         HttpEntity<String> requestEntityGame = new HttpEntity<>(body, headers);
         ResponseEntity<ArrayList> result = restTemplateGame.postForEntity(findGameuri, requestEntityGame, ArrayList.class);
 
-        Optional foundGameMapOpt = result.getBody().stream().filter(foundGame ->
-            ((Map<String, Object>)foundGame).get("name") != null && ((Map<String, Object>)foundGame).get("name").equals(gameName)).findFirst();
+        Optional foundGameMapPartialOpt = result.getBody().stream().filter(foundGame ->
+            ((Map<String, Object>)foundGame).get("name") != null && ((Map<String, Object>)foundGame).get("name").toString().replaceAll("[-+.^:,]","").contains(gameName.replaceAll("[-+.^:,]",""))).findFirst();
 
-        if (foundGameMapOpt.isEmpty()){
+        Optional foundGameMapOpt = result.getBody().stream().filter(foundGame ->
+                ((Map<String, Object>)foundGame).get("name") != null && ((Map<String, Object>)foundGame).get("name").toString().replaceAll("[-+.^:,]","").equals(gameName.replaceAll("[-+.^:,]",""))).findFirst();
+
+        if (foundGameMapPartialOpt.isEmpty()){
             return null;
         }
-        Map<String, Object> foundGameMap = (Map<String, Object>) foundGameMapOpt.get();
+        Map<String, Object> foundGameMap;
+        if (foundGameMapOpt.isPresent()){
+            foundGameMap = (Map<String, Object>) foundGameMapOpt.get();
+        }else {
+            foundGameMap = (Map<String, Object>) foundGameMapPartialOpt.get();
+        }
 
         IgdbGameResponse foundGame = IgdbGameResponse.builder()
                 .id((Integer) foundGameMap.get("id"))
@@ -57,7 +66,7 @@ public class GameServiceImpl implements GameService {
                 .name((String) foundGameMap.get("name"))
                 .artworks((ArrayList<Integer>) foundGameMap.get("artworks"))
                 .summary((String) foundGameMap.get("summary"))
-                .rating((Double) foundGameMap.get("rating"))
+                .rating((foundGameMap.get("rating")) == null ? 0.0 : ((double) foundGameMap.get("rating")))
                 .screenshots((ArrayList<Integer>) foundGameMap.get("screenshots"))
                 .first_release_date((Integer) foundGameMap.get("first_release_date"))
                 .videos((ArrayList<Integer>) foundGameMap.get("videos"))
@@ -71,15 +80,30 @@ public class GameServiceImpl implements GameService {
 
         Optional foundCoverMapOpt = resultCover.getBody().stream().filter(foundCover ->
             ((Map<String, Object>)foundCover).get("image_id") != null).findFirst();
-
         if (foundCoverMapOpt.isEmpty()){
             return null;
         }
         Map<String, Object> foundCoverMap = (Map<String, Object>) foundCoverMapOpt.get();
 
         String imageLink = String.format("//images.igdb.com/igdb/image/upload/t_1080p/%s.jpg", foundCoverMap.get("image_id"));
+        System.out.println(imageLink);
 
-        return imageLink;
+        //TODO: Add Artwork, Screenshots, and Videos
+
+        return Game.builder()
+                .id((long) foundGame.getId())
+                .title(foundGame.getName())
+                .name(foundGame.getName())
+                .backgroundImg(imageLink)
+                .creationTimeStamp(LocalDateTime.now())
+                .first_release_date(foundGame.getFirst_release_date())
+                .profileImg(imageLink)
+                .storyline(foundGame.getStoryline())
+                .rating(foundGame.getRating())
+                .summary(foundGame.getSummary())
+                .personalGameInformationList(new ArrayList<>())
+                .updateTimeStamp(LocalDateTime.now())
+                .build();
 
 
 

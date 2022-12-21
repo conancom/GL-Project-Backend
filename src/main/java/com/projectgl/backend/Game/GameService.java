@@ -6,6 +6,6 @@ public interface GameService {
 
     void synchronizeGames();
 
-    String fetchGame(String gameName);
+    Game fetchGame(String gameName);
 }
 

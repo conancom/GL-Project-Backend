@@ -5,6 +5,7 @@ import com.projectgl.backend.Dto.LibraryDetail;
 import com.projectgl.backend.Dto.SteamGames;
 import com.projectgl.backend.Game.Game;
 import com.projectgl.backend.Game.GameRepository;
+import com.projectgl.backend.Game.GameService;
 import com.projectgl.backend.PersonalGameInformation.PersonalGameInformation;
 import com.projectgl.backend.PersonalGameInformation.PersonalGameInformationRepository;
 import com.projectgl.backend.Response.LibraryGamesResponse;
@@ -30,12 +31,15 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
     final private GameRepository gameRepository;
     final private PersonalGameInformationRepository personalGameInformationRepository;
 
+    final private GameService gameService;
+
     @Autowired
-    public RegisteredLibraryAccountServiceImpl(RegisteredLibraryAccountRepository registeredLibraryAccountRepository, UserRepository userRepository, GameRepository gameRepository, PersonalGameInformationRepository personalGameInformationRepository) {
+    public RegisteredLibraryAccountServiceImpl(RegisteredLibraryAccountRepository registeredLibraryAccountRepository, UserRepository userRepository, GameRepository gameRepository, PersonalGameInformationRepository personalGameInformationRepository, GameService gameService) {
         this.registeredLibraryAccountRepository = registeredLibraryAccountRepository;
         this.userRepository = userRepository;
         this.gameRepository = gameRepository;
         this.personalGameInformationRepository = personalGameInformationRepository;
+        this.gameService = gameService;
     }
 
     public Optional<RegisteredLibraryAccount> findRegisteredLibraryAccountById(long registeredLibraryAccountId) {
@@ -62,7 +66,10 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
                     .game_name(personalGameInformation.getGame().getName())
                     .personal_game_id(personalGameInformation.getId())
                     .game_id(personalGameInformation.getGame().getId())
-                    .game_description(personalGameInformation.getGame().getInformation())
+                    .summary(personalGameInformation.getGame().getSummary())
+                    .storyline(personalGameInformation.getGame().getStoryline())
+                    .rating(personalGameInformation.getGame().getRating())
+                    .first_release_date(personalGameInformation.getGame().getFirst_release_date())
                     .picture_url(personalGameInformation.getGame().getProfileImg())
                     .banner_url(personalGameInformation.getGame().getBackgroundImg())
                     .library_name(registeredLibraryAccount.getAccountType())
@@ -110,30 +117,30 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
                     .build();
             registeredLibraryAccountRepository.saveAndFlush(registeredLibraryAccount);
             steamResponse.getResponse().getGames().forEach(steamResponseGame -> {
+                String processedName = steamResponseGame.getName().split("\\(")[0]; //TODO: Find a better way to clean string
+                steamResponseGame.setName(processedName.replaceAll("\\s+$", "")); //Remove Last Space
+                System.out.println(steamResponseGame.getName());
                 Optional<Game> optGame = gameRepository.findGameByName(steamResponseGame.getName());
                 Game game;
                 if(optGame.isEmpty()){
-                    game = Game.builder()
-                            .name(steamResponseGame.getName())
-                            .title(steamResponseGame.getName())
-                            .information("placeholder")
-                            .backgroundImg("placeholder")
-                            .creationTimeStamp(LocalDateTime.now())
-                            .updateTimeStamp(LocalDateTime.now())
-                            .profileImg(steamResponseGame.getImg_icon_url())
-                            .build();
-                    gameRepository.saveAndFlush(game);
+                    game = gameService.fetchGame(steamResponseGame.getName());
+                    if (game != null) {
+                        gameRepository.save(game);
+                    }
                 }else {
                     game = optGame.get();
                 }
-                PersonalGameInformation gameInformation = PersonalGameInformation.builder()
-                        .registeredLibraryAccount(registeredLibraryAccount)
-                        .creationTimeStamp(LocalDateTime.now())
-                        .updateTimeStamp(LocalDateTime.now())
-                        .game(game)
-                        .build();
-                personalGameInformationRepository.saveAndFlush(gameInformation);
-                registeredLibraryAccount.getPersonalGameInformationList().add(gameInformation);
+                if (game != null) { //TODO: Find more Edge Cases to Fix
+                    PersonalGameInformation gameInformation = PersonalGameInformation.builder()
+                            .registeredLibraryAccount(registeredLibraryAccount)
+                            .creationTimeStamp(LocalDateTime.now())
+                            .updateTimeStamp(LocalDateTime.now())
+                            .game(game)
+                            .build();
+                    game.getPersonalGameInformationList().add(gameInformation);
+                    personalGameInformationRepository.saveAndFlush(gameInformation);
+                    registeredLibraryAccount.getPersonalGameInformationList().add(gameInformation);
+                }
             });
 
 

@@ -14,14 +14,17 @@ CREATE TYPE public.accounttype AS ENUM (
 -- DROP TABLE public.game;
 
 CREATE TABLE public.game (
-	id int8 NOT NULL GENERATED ALWAYS AS IDENTITY,
+	id int8 NOT NULL,
 	"name" varchar NOT NULL,
 	title varchar NOT NULL,
-	information text NOT NULL,
 	profileimg text NOT NULL,
 	backgroundimg text NOT NULL,
 	creationtimestamp timestamp NOT NULL,
 	updatetimestamp timestamp NOT NULL,
+	summary varchar NULL,
+	storyline varchar NULL,
+	rating numeric NULL,
+	first_release_date int8 NULL,
 	CONSTRAINT game_pk PRIMARY KEY (id)
 );
 CREATE INDEX game_creationtimestamp_idx ON public.game USING btree (creationtimestamp);

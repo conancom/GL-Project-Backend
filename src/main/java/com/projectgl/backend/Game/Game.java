@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,14 +20,19 @@ import java.util.List;
 public class Game {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
     private String title;
 
-    private String information;
+    private String summary;
+
+    private String storyline;
+
+    private double rating;
+
+    private int first_release_date;
 
     @Column(name = "profileimg")
     private String profileImg;

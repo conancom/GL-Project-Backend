@@ -47,10 +47,4 @@ public class GameController {
         return ResponseEntity.ok(personalGameInformationService.createGameResponse(userId, gameDto.getGame_id()));
     }
 
-    @PostMapping("api/v1/test-game-info")
-    public ResponseEntity<String> gameDB(@RequestBody GameDto gameDto, HttpServletRequest request){
-
-        return ResponseEntity.ok(gameService.fetchGame(gameDto.getSession_id()));
-    }
-
 }
