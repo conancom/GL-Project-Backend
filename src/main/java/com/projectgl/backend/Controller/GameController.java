@@ -1,8 +1,10 @@
 package com.projectgl.backend.Controller;
 
 import com.projectgl.backend.Dto.GameDto;
+import com.projectgl.backend.Game.GameService;
 import com.projectgl.backend.PersonalGameInformation.PersonalGameInformationService;
 import com.projectgl.backend.Response.GameResponse;
+import com.projectgl.backend.Response.IgdbGameResponse;
 import com.projectgl.backend.Session.SessionService;
 import com.projectgl.backend.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +24,15 @@ public class GameController {
 
     final public PersonalGameInformationService personalGameInformationService;
 
+    final public GameService gameService;
+
     final public SessionService sessionService;
 
     @Autowired
-    public GameController(UserService userService, PersonalGameInformationService personalGameInformationService, SessionService sessionService) {
+    public GameController(UserService userService, PersonalGameInformationService personalGameInformationService, GameService gameService, SessionService sessionService) {
         this.userService = userService;
         this.personalGameInformationService = personalGameInformationService;
+        this.gameService = gameService;
         this.sessionService = sessionService;
     }
 
@@ -40,6 +45,12 @@ public class GameController {
         long userId = sessionService.getUserId(gameDto.getSession_id());
         sessionService.refreshSession(gameDto.getSession_id());
         return ResponseEntity.ok(personalGameInformationService.createGameResponse(userId, gameDto.getGame_id()));
+    }
+
+    @PostMapping("api/v1/test-game-info")
+    public ResponseEntity<String> gameDB(@RequestBody GameDto gameDto, HttpServletRequest request){
+
+        return ResponseEntity.ok(gameService.fetchGame(gameDto.getSession_id()));
     }
 
 }

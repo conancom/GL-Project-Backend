@@ -135,6 +135,8 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
                 personalGameInformationRepository.saveAndFlush(gameInformation);
                 registeredLibraryAccount.getPersonalGameInformationList().add(gameInformation);
             });
+
+
             user.getRegisteredLibraryAccountList().add(registeredLibraryAccount);
             userRepository.saveAndFlush(user);
         }
