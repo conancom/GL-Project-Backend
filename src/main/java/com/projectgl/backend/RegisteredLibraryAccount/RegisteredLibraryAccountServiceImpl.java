@@ -118,8 +118,7 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
             registeredLibraryAccountRepository.saveAndFlush(registeredLibraryAccount);
             steamResponse.getResponse().getGames().forEach(steamResponseGame -> {
                 String processedName = steamResponseGame.getName().split("\\(")[0]; //TODO: Find a better way to clean string
-                steamResponseGame.setName(processedName.replaceAll("\\s+$", "")); //Remove Last Space
-                System.out.println(steamResponseGame.getName());
+                steamResponseGame.setName(processedName.replaceAll("\\s+$", "").replaceAll("[-+.^:,®™]","").toLowerCase().replaceAll("\\s+", " ")); //Remove Last Space
                 Optional<Game> optGame = gameRepository.findGameByName(steamResponseGame.getName());
                 Game game;
                 if(optGame.isEmpty()){

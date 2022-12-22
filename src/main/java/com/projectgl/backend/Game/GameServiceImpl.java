@@ -43,22 +43,26 @@ public class GameServiceImpl implements GameService {
         String body = String.format("search \"%s\"; fields name, id, cover, storyline, summary, first_release_date, artworks, rating, videos, screenshots;", gameName)   ;
         HttpEntity<String> requestEntityGame = new HttpEntity<>(body, headers);
         ResponseEntity<ArrayList> result = restTemplateGame.postForEntity(findGameuri, requestEntityGame, ArrayList.class);
+        System.out.println("Init: " + gameName);
 
         Optional foundGameMapPartialOpt = result.getBody().stream().filter(foundGame ->
-            ((Map<String, Object>)foundGame).get("name") != null && ((Map<String, Object>)foundGame).get("name").toString().replaceAll("[-+.^:,]","").contains(gameName.replaceAll("[-+.^:,]",""))).findFirst();
+            ((Map<String, Object>)foundGame).get("name") != null && ((Map<String, Object>)foundGame).get("name").toString().replaceAll("[-+.^:,®™]","").toLowerCase().contains(gameName)).findAny();
 
         Optional foundGameMapOpt = result.getBody().stream().filter(foundGame ->
-                ((Map<String, Object>)foundGame).get("name") != null && ((Map<String, Object>)foundGame).get("name").toString().replaceAll("[-+.^:,]","").equals(gameName.replaceAll("[-+.^:,]",""))).findFirst();
+                ((Map<String, Object>)foundGame).get("name") != null && ((Map<String, Object>)foundGame).get("name").toString().replaceAll("[-+.^:,®™]","").toLowerCase().equals(gameName)).findFirst();
 
         if (foundGameMapPartialOpt.isEmpty()){
             return null;
         }
+
         Map<String, Object> foundGameMap;
+
         if (foundGameMapOpt.isPresent()){
             foundGameMap = (Map<String, Object>) foundGameMapOpt.get();
         }else {
             foundGameMap = (Map<String, Object>) foundGameMapPartialOpt.get();
         }
+        System.out.println("Found: " +  foundGameMap.get("name"));
 
         IgdbGameResponse foundGame = IgdbGameResponse.builder()
                 .id((Integer) foundGameMap.get("id"))
