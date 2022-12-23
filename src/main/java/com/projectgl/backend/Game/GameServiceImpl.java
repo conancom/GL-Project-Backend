@@ -1,7 +1,10 @@
 package com.projectgl.backend.Game;
 
+import com.projectgl.backend.Dto.GameVideo;
+import com.projectgl.backend.Dto.SteamResponseGame;
 import com.projectgl.backend.Response.IgdbAuthResponse;
 import com.projectgl.backend.Response.IgdbGameResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -20,6 +22,13 @@ public class GameServiceImpl implements GameService {
     static String ClientID = "527btjgrr29t3u6dj011v4e2g7ue1l";
 
     static String ClientSecret = "woeifs1uesyy2izr5kngec526kx9rd";
+
+    final private GameRepository gameRepository;
+
+    @Autowired
+    public GameServiceImpl(GameRepository gameRepository) {
+        this.gameRepository = gameRepository;
+    }
 
     public void synchronizeGames() {
 
@@ -29,7 +38,23 @@ public class GameServiceImpl implements GameService {
         return getGameInformationFromIgdb(gameName);
     }
 
-    private Game getGameInformationFromIgdb(String gameName){
+    public Game synchronizeGameFromSteam(SteamResponseGame steamResponseGame) {
+        String processedName = steamResponseGame.getName(); //TODO: Find a better way to clean string
+        steamResponseGame.setName(processedName.replaceAll("[-+.^:,®™]","").replaceAll("\\(.*\\)", "").replaceAll("\\s+$", "").toLowerCase().replaceAll("\\s+", " ")); //Remove Last Space
+        Optional<Game> optGame = gameRepository.findGameByName(steamResponseGame.getName());
+        Game game;
+        if(optGame.isEmpty()){
+            game = getGameInformationFromIgdb(steamResponseGame.getName());
+            if (game != null) {
+                gameRepository.save(game);
+            }
+        }else {
+            game = optGame.get();
+        }
+        return game;
+    }
+
+    public Game getGameInformationFromIgdb(String gameName){
         final String authuri = String.format("https://id.twitch.tv/oauth2/token?client_id=%s&client_secret=%s&grant_type=client_credentials", ClientID, ClientSecret);
         RestTemplate restTemplateAuth = new RestTemplate();
 
@@ -46,10 +71,10 @@ public class GameServiceImpl implements GameService {
         System.out.println("Init: " + gameName);
 
         Optional foundGameMapPartialOpt = result.getBody().stream().filter(foundGame ->
-            ((Map<String, Object>)foundGame).get("name") != null && ((Map<String, Object>)foundGame).get("name").toString().replaceAll("[-+.^:,®™]","").toLowerCase().contains(gameName)).findAny();
+            ((Map<String, Object>)foundGame).get("name") != null && ((Map<String, Object>)foundGame).get("name").toString().replaceAll("[-+.^:,®™()]","").toLowerCase().contains(gameName)).findAny();
 
         Optional foundGameMapOpt = result.getBody().stream().filter(foundGame ->
-                ((Map<String, Object>)foundGame).get("name") != null && ((Map<String, Object>)foundGame).get("name").toString().replaceAll("[-+.^:,®™]","").toLowerCase().equals(gameName)).findFirst();
+                ((Map<String, Object>)foundGame).get("name") != null && ((Map<String, Object>)foundGame).get("name").toString().replaceAll("[-+.^:,®™()]","").toLowerCase().equals(gameName)).findFirst();
 
         if (foundGameMapPartialOpt.isEmpty()){
             return null;
@@ -82,17 +107,61 @@ public class GameServiceImpl implements GameService {
         HttpEntity<String> requestEntityCover = new HttpEntity<>(coverBody, headers);
         ResponseEntity<ArrayList> resultCover = restTemplateGame.postForEntity(findCoveruri, requestEntityCover, ArrayList.class);
 
-        Optional foundCoverMapOpt = resultCover.getBody().stream().filter(foundCover ->
+        String imageLink;
+                Optional foundCoverMapOpt = resultCover.getBody().stream().filter(foundCover ->
             ((Map<String, Object>)foundCover).get("image_id") != null).findFirst();
-        if (foundCoverMapOpt.isEmpty()){
-            return null;
+        if (!foundCoverMapOpt.isEmpty()){
+            Map<String, Object> foundCoverMap = (Map<String, Object>) foundCoverMapOpt.get();
+            imageLink = String.format("//images.igdb.com/igdb/image/upload/t_1080p/%s.jpg", foundCoverMap.get("image_id"));
+            System.out.println(imageLink);
+        }else{
+            imageLink = "Not Available";
         }
-        Map<String, Object> foundCoverMap = (Map<String, Object>) foundCoverMapOpt.get();
 
-        String imageLink = String.format("//images.igdb.com/igdb/image/upload/t_1080p/%s.jpg", foundCoverMap.get("image_id"));
-        System.out.println(imageLink);
+        //TODO: Add Artwork
+        //TODO: Create 1:M Tables for Screenshots and Videos to Games
 
-        //TODO: Add Artwork, Screenshots, and Videos
+        //Screenshots
+        final String findScreenshoturi = "https://api.igdb.com/v4/screenshots";
+        String screenshotBody = String.format("fields image_id; where game = %s;", foundGame.getId())   ;
+        HttpEntity<String> requestEntityScreenShot = new HttpEntity<>(screenshotBody, headers);
+        ResponseEntity<ArrayList> resultScreenShot = restTemplateGame.postForEntity(findScreenshoturi, requestEntityScreenShot, ArrayList.class);
+
+        ArrayList<String> screentshots = new ArrayList<>();
+        if (!resultScreenShot.getBody().isEmpty()){
+            resultScreenShot.getBody().forEach( screentshot -> {
+                String rawImageId = (String) ((Map<String, Object>) screentshot).get("image_id");
+                String screenShot = String.format("//images.igdb.com/igdb/image/upload/t_1080p/%s.jpg", rawImageId);
+                screentshots.add(screenShot);
+            });
+        }
+
+        //Debug
+        screentshots.forEach( screenshot -> {
+            System.out.println(screenshot);
+        });
+
+        //Videos
+        final String findVideouri = "https://api.igdb.com/v4/game_videos/";
+        String videoBody = String.format("fields name, video_id; where game = %s;", foundGame.getId())   ;
+        HttpEntity<String> requestEntityVideo = new HttpEntity<>(videoBody, headers);
+        ResponseEntity<ArrayList> resultVideo = restTemplateGame.postForEntity(findVideouri, requestEntityVideo, ArrayList.class);
+
+        ArrayList<GameVideo> videos = new ArrayList<>();
+        if (!resultVideo.getBody().isEmpty()){
+            resultVideo.getBody().forEach( screentshot -> {
+                videos.add(GameVideo.builder()
+                        .name((String) ((Map<String, Object>)screentshot).get("name"))
+                        .video_id((String) ((Map<String, Object>)screentshot).get("video_id"))
+                        .build());
+            });
+        }
+
+        //Debug
+        videos.forEach( video -> {
+            System.out.println(video.getVideo_id());
+            System.out.println(video.getName());
+        });
 
         return Game.builder()
                 .id((long) foundGame.getId())
@@ -108,9 +177,5 @@ public class GameServiceImpl implements GameService {
                 .personalGameInformationList(new ArrayList<>())
                 .updateTimeStamp(LocalDateTime.now())
                 .build();
-
-
-
-
     }
 }

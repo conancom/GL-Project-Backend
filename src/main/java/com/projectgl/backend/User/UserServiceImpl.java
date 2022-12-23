@@ -129,7 +129,9 @@ public class UserServiceImpl implements UserService {
                         .picture_url(personalGameInformation.getGame().getProfileImg())
                         .banner_url(personalGameInformation.getGame().getBackgroundImg())
                         .library_name(registeredLibraryAccount.getAccountType())
-                        .library_id(registeredLibraryAccount.getId()).build();
+                        .library_id(registeredLibraryAccount.getId())
+                        .total_play_time(personalGameInformation.getTotaltimeplayed())
+                        .build();
                 libraryGamesResponse.getGames().add(gameDetail);
             });
         });

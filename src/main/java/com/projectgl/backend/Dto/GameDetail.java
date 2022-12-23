@@ -31,5 +31,7 @@ public class GameDetail {
 
     private Long library_id;
 
+    private int total_play_time;
+
 }
 

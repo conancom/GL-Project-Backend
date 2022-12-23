@@ -34,4 +34,7 @@ public class PersonalGameInformation {
 
     @Column(name = "updatetimestamp")
     private LocalDateTime updateTimeStamp;
+
+    private int totaltimeplayed;
+
 }

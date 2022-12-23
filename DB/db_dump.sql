@@ -79,6 +79,7 @@ CREATE TABLE public.personalgameinformation (
 	gameid int8 NOT NULL,
 	creationtimestamp timestamp NOT NULL,
 	updatetimestamp timestamp NOT NULL,
+	totaltimeplayed int8 NOT NULL DEFAULT 0,
 	CONSTRAINT personalgameinformation_pk PRIMARY KEY (id),
 	CONSTRAINT personalgameinformation_fk FOREIGN KEY (registeredlibraryaccountid) REFERENCES public.registered_library_account(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT personalgameinformation_fk_1 FOREIGN KEY (gameid) REFERENCES public.game(id) ON DELETE CASCADE ON UPDATE CASCADE

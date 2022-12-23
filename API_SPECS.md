@@ -55,7 +55,8 @@
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
       "library_name": "STEAM", //UBISOFT, EPIC, ETC
-      "library_id": 897236428934
+      "library_id": 897236428934,
+      "total_play_time": 157894 //In minutes
     },
     {
       "game_name": "Naraka",
@@ -68,7 +69,8 @@
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
       "library_name": "STEAM", //UBISOFT, EPIC, ETC
-      "library_id": 897236428934
+      "library_id": 897236428934,
+      "total_play_time": 0 //In minutes
     },
     {
       "game_name": "Overwatch",
@@ -81,7 +83,8 @@
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
       "library_name": "GOG", //UBISOFT, EPIC, ETC
-      "library_id": 897236428934
+      "library_id": 897236428934,
+      "total_play_time": 12564894 //In minutes
     }
   ]
 }
@@ -109,7 +112,8 @@
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
       "library_name": "STEAM", //UBISOFT, EPIC, ETC
-      "library_id": 897236428934
+      "library_id": 897236428934,
+      "total_play_time": 564894 //In minutes
     },
     {
       "game_name": "Naraka",
@@ -122,7 +126,8 @@
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
       "library_name": "STEAM", //UBISOFT, EPIC, ETC
-      "library_id": 897236428934
+      "library_id": 897236428934,
+      "total_play_time": 0 //In minutes
     },
     {
       "game_name": "Overwatch",
@@ -135,7 +140,8 @@
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
       "library_name": "STEAM", //UBISOFT, EPIC, ETC
-      "library_id": 897236428934
+      "library_id": 897236428934,
+      "total_play_time": 1567894231 //In minutes
     }
   ]
 }
@@ -148,6 +154,7 @@
 }
 ```
 ##### Response
+
 ```json
 {
   "status": "SESSION_KEY_OK",
@@ -157,12 +164,15 @@
   "personal_game_id": "asd80973jklhf897yhnbjkbufygdfa",
   "summary": "game description bla bla",
   "storyline": "sample story line can be null tho",
-  "rating" : 97.11564,
-  "first_release_date": 1897651321, //UNIX TIME STAMP
+  "rating": 97.11564,
+  "first_release_date": 1897651321,
+  //UNIX TIME STAMP
   "picture_url": "https//pic.com",
   "banner_url": "https//pic.com",
-  "library_name": "STEAM", //UBISOFT, EPIC, ETC
-  "library_id": 98302723907234
+  "library_name": "STEAM",
+  //UBISOFT, EPIC, ETC
+  "library_id": 98302723907234,
+  "total_play_time": 15616132 //In minutes
 }
 ```
 #### [POST] /api/v1/register-library

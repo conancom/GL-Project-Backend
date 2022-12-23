@@ -3,6 +3,7 @@ package com.projectgl.backend.RegisteredLibraryAccount;
 import com.projectgl.backend.Dto.GameDetail;
 import com.projectgl.backend.Dto.LibraryDetail;
 import com.projectgl.backend.Dto.SteamGames;
+import com.projectgl.backend.Dto.SteamResponseGame;
 import com.projectgl.backend.Game.Game;
 import com.projectgl.backend.Game.GameRepository;
 import com.projectgl.backend.Game.GameService;
@@ -73,7 +74,9 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
                     .picture_url(personalGameInformation.getGame().getProfileImg())
                     .banner_url(personalGameInformation.getGame().getBackgroundImg())
                     .library_name(registeredLibraryAccount.getAccountType())
-                    .library_id(registeredLibraryAccount.getId()).build();
+                    .library_id(registeredLibraryAccount.getId())
+                    .total_play_time(personalGameInformation.getTotaltimeplayed())
+                    .build();
             libraryGamesResponse.getGames().add(gameDetail);
         });
         libraryGamesResponse.getGames().sort(Comparator.comparing(GameDetail::getGame_name));
@@ -117,24 +120,14 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
                     .build();
             registeredLibraryAccountRepository.saveAndFlush(registeredLibraryAccount);
             steamResponse.getResponse().getGames().forEach(steamResponseGame -> {
-                String processedName = steamResponseGame.getName().split("\\(")[0]; //TODO: Find a better way to clean string
-                steamResponseGame.setName(processedName.replaceAll("\\s+$", "").replaceAll("[-+.^:,®™]","").toLowerCase().replaceAll("\\s+", " ")); //Remove Last Space
-                Optional<Game> optGame = gameRepository.findGameByName(steamResponseGame.getName());
-                Game game;
-                if(optGame.isEmpty()){
-                    game = gameService.fetchGame(steamResponseGame.getName());
-                    if (game != null) {
-                        gameRepository.save(game);
-                    }
-                }else {
-                    game = optGame.get();
-                }
+                Game game = gameService.synchronizeGameFromSteam(steamResponseGame);
                 if (game != null) { //TODO: Find more Edge Cases to Fix
                     PersonalGameInformation gameInformation = PersonalGameInformation.builder()
                             .registeredLibraryAccount(registeredLibraryAccount)
                             .creationTimeStamp(LocalDateTime.now())
                             .updateTimeStamp(LocalDateTime.now())
                             .game(game)
+                            .totaltimeplayed(steamResponseGame.getPlaytime_forever())
                             .build();
                     game.getPersonalGameInformationList().add(gameInformation);
                     personalGameInformationRepository.saveAndFlush(gameInformation);
