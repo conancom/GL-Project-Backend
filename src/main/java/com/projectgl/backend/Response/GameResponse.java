@@ -36,6 +36,8 @@ public class GameResponse {
 
     private Long library_id;
 
+    private int total_play_time;
+
     private ArrayList<GameVideoResponse> videos;
 
     private ArrayList<GameScreenshotResponse> screenshots;

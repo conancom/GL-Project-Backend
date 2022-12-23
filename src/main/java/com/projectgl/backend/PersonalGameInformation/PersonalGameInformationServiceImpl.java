@@ -61,6 +61,7 @@ public class PersonalGameInformationServiceImpl implements PersonalGameInformati
                 .banner_url(personalGameInformation.getGame().getBackgroundImg())
                 .library_name(personalGameInformation.getRegisteredLibraryAccount().getAccountType())
                 .library_id(personalGameInformation.getRegisteredLibraryAccount().getId())
+                .total_play_time(personalGameInformation.getTotaltimeplayed())
                 .videos(gameVideoResponse)
                 .screenshots(gameScreenshotResponse)
                 .status(GameResponse.Status.SESSION_KEY_OK).build();
