@@ -1,6 +1,5 @@
 package com.projectgl.backend.Game;
 
-import com.projectgl.backend.Dto.GameVideo;
 import com.projectgl.backend.Dto.SteamResponseGame;
 import com.projectgl.backend.Response.IgdbAuthResponse;
 import com.projectgl.backend.Response.IgdbGameResponse;
@@ -127,12 +126,16 @@ public class GameServiceImpl implements GameService {
         HttpEntity<String> requestEntityScreenShot = new HttpEntity<>(screenshotBody, headers);
         ResponseEntity<ArrayList> resultScreenShot = restTemplateGame.postForEntity(findScreenshoturi, requestEntityScreenShot, ArrayList.class);
 
-        ArrayList<String> screentshots = new ArrayList<>();
+        ArrayList<GameScreenshot> screentshots = new ArrayList<>();
         if (!resultScreenShot.getBody().isEmpty()){
             resultScreenShot.getBody().forEach( screentshot -> {
                 String rawImageId = (String) ((Map<String, Object>) screentshot).get("image_id");
                 String screenShot = String.format("//images.igdb.com/igdb/image/upload/t_1080p/%s.jpg", rawImageId);
-                screentshots.add(screenShot);
+                screentshots.add(GameScreenshot.builder()
+                        .screenshot_url(screenShot)
+                        .creationTimeStamp(LocalDateTime.now())
+                        .updateTimeStamp(LocalDateTime.now())
+                        .build());
             });
         }
 
@@ -151,8 +154,12 @@ public class GameServiceImpl implements GameService {
         if (!resultVideo.getBody().isEmpty()){
             resultVideo.getBody().forEach( screentshot -> {
                 videos.add(GameVideo.builder()
-                        .name((String) ((Map<String, Object>)screentshot).get("name"))
+                        .name(  (((Map<String, Object>)screentshot).get("name")) != null
+                                ? ((String) ((Map<String, Object>)screentshot).get("name"))
+                                : "not Available" )
                         .video_id((String) ((Map<String, Object>)screentshot).get("video_id"))
+                        .creationTimeStamp(LocalDateTime.now())
+                        .updateTimeStamp(LocalDateTime.now())
                         .build());
             });
         }
@@ -163,7 +170,7 @@ public class GameServiceImpl implements GameService {
             System.out.println(video.getName());
         });
 
-        return Game.builder()
+        Game game = Game.builder()
                 .id((long) foundGame.getId())
                 .title(foundGame.getName())
                 .name(foundGame.getName())
@@ -176,6 +183,15 @@ public class GameServiceImpl implements GameService {
                 .summary(foundGame.getSummary())
                 .personalGameInformationList(new ArrayList<>())
                 .updateTimeStamp(LocalDateTime.now())
+                .gameVideos(videos)
+                .gameScreenshots(screentshots)
                 .build();
+        videos.forEach( video -> {
+            video.setGame(game);
+        });
+        screentshots.forEach( screentshot -> {
+            screentshot.setGame(game);
+        });
+        return game;
     }
 }

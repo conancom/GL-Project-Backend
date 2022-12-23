@@ -172,7 +172,31 @@
   "library_name": "STEAM",
   //UBISOFT, EPIC, ETC
   "library_id": 98302723907234,
-  "total_play_time": 15616132 //In minutes
+  "total_play_time": 15616132
+  //In minutes
+  "videos": [
+    {
+      "name": "Trailer",
+      "video_id": "cU56Kh731Q0"
+      //Some Youtube Watch link
+    },
+    {
+      "name": "not Available",
+      "video_id": "cU56Kh731Q0"
+      //Some Youtube Watch link
+    }
+  ],
+  "screenshots": [
+    {
+      "screenshot_url": "https//pic.com"
+    },
+    {
+      "screenshot_url": "https//pic.com"
+    },
+    {
+      "screenshot_url": "https//pic.com"
+    }
+  ]
 }
 ```
 #### [POST] /api/v1/register-library

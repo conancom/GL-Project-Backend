@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -43,6 +42,12 @@ public class Game {
     @OneToMany
     @JoinColumn(name = "gameid")
     private List<PersonalGameInformation> personalGameInformationList;
+
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GameVideo> gameVideos;
+
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GameScreenshot> gameScreenshots;
 
     @Column(name = "creationtimestamp")
     private LocalDateTime creationTimeStamp;
