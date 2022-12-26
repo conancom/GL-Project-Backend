@@ -1,5 +1,6 @@
 package com.projectgl.backend.Game;
 
+import com.projectgl.backend.Dto.GogGameDetailsResponse;
 import com.projectgl.backend.Dto.SteamResponseGame;
 import com.projectgl.backend.Response.IgdbAuthResponse;
 import com.projectgl.backend.Response.IgdbGameResponse;
@@ -44,6 +45,22 @@ public class GameServiceImpl implements GameService {
         Game game;
         if(optGame.isEmpty()){
             game = getGameInformationFromIgdb(steamResponseGame.getName());
+            if (game != null) {
+                gameRepository.save(game);
+            }
+        }else {
+            game = optGame.get();
+        }
+        return game;
+    }
+
+    public Game synchronizeGameFromGog(GogGameDetailsResponse gogGameDetailsResponse) {
+        String processedName = gogGameDetailsResponse.getTitle(); //TODO: Find a better way to clean string
+        gogGameDetailsResponse.setTitle(processedName.replaceAll("[-+.^:,®™]","").replaceAll("\\(.*\\)", "").replaceAll("\\s+$", "").toLowerCase().replaceAll("\\s+", " ")); //Remove Last Space
+        Optional<Game> optGame = gameRepository.findGameByName(gogGameDetailsResponse.getTitle());
+        Game game;
+        if(optGame.isEmpty()){
+            game = getGameInformationFromIgdb(gogGameDetailsResponse.getTitle());
             if (game != null) {
                 gameRepository.save(game);
             }

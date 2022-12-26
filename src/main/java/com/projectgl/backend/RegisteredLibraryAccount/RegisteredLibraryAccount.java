@@ -24,6 +24,9 @@ public class RegisteredLibraryAccount {
     @Column(name = "apikey")
     private String apiKey;
 
+    @Column(name = "refreshkey")
+    private String refreshkey;
+
     @Column(name = "creationtimestamp")
     private LocalDateTime creationTimeStamp;
 

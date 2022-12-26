@@ -1,9 +1,6 @@
 package com.projectgl.backend.RegisteredLibraryAccount;
 
-import com.projectgl.backend.Dto.GameDetail;
-import com.projectgl.backend.Dto.LibraryDetail;
-import com.projectgl.backend.Dto.SteamGames;
-import com.projectgl.backend.Dto.SteamResponseGame;
+import com.projectgl.backend.Dto.*;
 import com.projectgl.backend.Game.Game;
 import com.projectgl.backend.Game.GameRepository;
 import com.projectgl.backend.Game.GameService;
@@ -15,9 +12,17 @@ import com.projectgl.backend.Response.LibraryResponse;
 import com.projectgl.backend.User.User;
 import com.projectgl.backend.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,11 +33,16 @@ import java.util.Optional;
 public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAccountService{
 
     final private RegisteredLibraryAccountRepository registeredLibraryAccountRepository;
+
     final private UserRepository userRepository;
+
     final private GameRepository gameRepository;
+
     final private PersonalGameInformationRepository personalGameInformationRepository;
 
     final private GameService gameService;
+
+    static String gogRedirectUriNewLogin = "https://embed.gog.com/on_login_success?origin=client";
 
     @Autowired
     public RegisteredLibraryAccountServiceImpl(RegisteredLibraryAccountRepository registeredLibraryAccountRepository, UserRepository userRepository, GameRepository gameRepository, PersonalGameInformationRepository personalGameInformationRepository, GameService gameService) {
@@ -90,6 +100,36 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
         return restTemplate.getForObject(uri, SteamGames.class);
     }
 
+    private GogTokenResponse newLoginGogToken(String code){
+
+        String encodedRedirectUri = URLEncoder.encode(gogRedirectUriNewLogin, StandardCharsets.UTF_8);
+
+        final String uri = String.format("http://auth.gog.com/token?client_id=46899977096215655&client_secret=9d85c43b1482497dbbce61f6e4aa173a433796eeae2ca8c5f6129f2dc4de46d9&grant_type=authorization_code&code=%s&redirect_uri=%s", code, encodedRedirectUri);
+
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject(uri, GogTokenResponse.class);
+    }
+
+    private GogAllGamesResponse getGogGames(String accessToken){
+        final String uri = "embed.gog.com/user/data/games";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> requestEntityGame = new HttpEntity<>(headers);
+        ResponseEntity<GogAllGamesResponse> result = restTemplate.exchange(uri, HttpMethod.GET ,requestEntityGame, GogAllGamesResponse.class);
+        return result.getBody();
+    }
+
+    private GogGameDetailsResponse getGogGameDetails(int gameId, String accessToken){
+        final String uri = String.format("embed.gog.com/account/gameDetails/%s.json", gameId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> requestEntityGame = new HttpEntity<>(headers);
+        ResponseEntity<GogGameDetailsResponse> result = restTemplate.exchange(uri, HttpMethod.GET ,requestEntityGame, GogGameDetailsResponse.class);
+        return result.getBody();
+    }
+
     public LibraryRegisterResponse registerLibraryAccount(long userId, String libraryType, String libraryApiKey) {
         Optional<User> optUser = userRepository.findById(userId);
 
@@ -135,10 +175,45 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
                 }
             });
 
+            user.getRegisteredLibraryAccountList().add(registeredLibraryAccount);
+            userRepository.saveAndFlush(user);
+        }else if(libraryType.equals("GOG")){
+            GogTokenResponse gogTokenResponse = newLoginGogToken(libraryApiKey);
+            if(gogTokenResponse == null){
+                return LibraryRegisterResponse.builder().library_key_status(LibraryRegisterResponse.Status.GOG_ACCOUNT_NOT_FOUND).build();
+            }
+            GogAllGamesResponse gogAllGamesResponse = getGogGames(gogTokenResponse.getAccess_token());
+            registeredLibraryAccount = RegisteredLibraryAccount.builder()
+                    .user(user)
+                    .accountType(libraryType)
+                    .apiKey(gogTokenResponse.getAccess_token())
+                    .refreshkey(gogTokenResponse.getRefresh_token())
+                    .creationTimeStamp(LocalDateTime.now())
+                    .updateTimeStamp(LocalDateTime.now())
+                    .personalGameInformationList(new ArrayList<PersonalGameInformation>())
+                    .build();
+            registeredLibraryAccountRepository.saveAndFlush(registeredLibraryAccount);
 
+            gogAllGamesResponse.getOwned().forEach( gameId -> {
+                GogGameDetailsResponse gogGameDetailsResponse = getGogGameDetails(gameId, gogTokenResponse.getAccess_token());
+                Game game = gameService.synchronizeGameFromGog(gogGameDetailsResponse);
+                if (game != null) { //TODO: Find more Edge Cases to Fix
+                    PersonalGameInformation gameInformation = PersonalGameInformation.builder()
+                            .registeredLibraryAccount(registeredLibraryAccount)
+                            .creationTimeStamp(LocalDateTime.now())
+                            .updateTimeStamp(LocalDateTime.now())
+                            .game(game)
+                            .totaltimeplayed(0)
+                            .build();
+                    game.getPersonalGameInformationList().add(gameInformation);
+                    personalGameInformationRepository.saveAndFlush(gameInformation);
+                    registeredLibraryAccount.getPersonalGameInformationList().add(gameInformation);
+                }
+            });
             user.getRegisteredLibraryAccountList().add(registeredLibraryAccount);
             userRepository.saveAndFlush(user);
         }
+
         return LibraryRegisterResponse.builder()
                 .status(LibraryRegisterResponse.Status.SESSION_KEY_OK)
                 .library_key_status(LibraryRegisterResponse.Status.ADDED_SUCCESSFUL)

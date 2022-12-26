@@ -63,12 +63,16 @@ CREATE TABLE public.registered_library_account (
 	apikey varchar NULL,
 	creationtimestamp timestamp NOT NULL,
 	updatetimestamp timestamp NOT NULL,
-	CONSTRAINT registered_library_account_pk PRIMARY KEY (id),
-	CONSTRAINT registered_library_account_fk FOREIGN KEY (userid) REFERENCES public."user"(id) ON DELETE CASCADE ON UPDATE CASCADE
+	refreshkey varchar NULL,
+	CONSTRAINT registered_library_account_pk PRIMARY KEY (id)
 );
 CREATE INDEX registered_library_account_creationtimestamp_idx ON public.registered_library_account USING btree (creationtimestamp);
 CREATE INDEX registered_library_account_updatetimestamp_idx ON public.registered_library_account USING btree (updatetimestamp);
 
+
+-- public.registered_library_account foreign keys
+
+ALTER TABLE public.registered_library_account ADD CONSTRAINT registered_library_account_fk FOREIGN KEY (userid) REFERENCES public."user"(id) ON DELETE CASCADE ON UPDATE CASCADE;
 -- Drop table
 
 -- DROP TABLE public.personalgameinformation;
