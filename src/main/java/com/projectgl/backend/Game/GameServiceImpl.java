@@ -107,14 +107,14 @@ public class GameServiceImpl implements GameService {
 
         IgdbGameResponse foundGame = IgdbGameResponse.builder()
                 .id((Integer) foundGameMap.get("id"))
-                .cover((Integer) foundGameMap.get("cover"))
+                .cover((foundGameMap.get("cover")) == null ? 0 : (Integer) foundGameMap.get("cover"))
                 .name((String) foundGameMap.get("name"))
                 .artworks((ArrayList<Integer>) foundGameMap.get("artworks"))
                 .summary((String) foundGameMap.get("summary"))
                 .rating((foundGameMap.get("rating")) == null ? 0.0 : ((double) foundGameMap.get("rating")))
-                .screenshots((ArrayList<Integer>) foundGameMap.get("screenshots"))
-                .first_release_date((Integer) foundGameMap.get("first_release_date"))
-                .videos((ArrayList<Integer>) foundGameMap.get("videos"))
+                .screenshots((foundGameMap.get("screenshots")) == null ? new ArrayList<>() :(ArrayList<Integer>) foundGameMap.get("screenshots"))
+                .first_release_date((foundGameMap.get("first_release_date")) == null ? 0 :(Integer) foundGameMap.get("first_release_date"))
+                .videos((foundGameMap.get("videos")) == null ? new ArrayList<>() :(ArrayList<Integer>) foundGameMap.get("videos"))
                 .storyline((String) foundGameMap.get("storyline"))
                 .build();
 
