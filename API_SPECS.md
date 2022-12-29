@@ -33,6 +33,19 @@
   "session_id": "layusd5652mnzxbc3viggweyutabh8974"
 }
 ```
+#### [POST] /api/v1/logout
+##### Request
+```json
+{
+  "session_id": "layusd5652mnzxbc3viggweyutabh8974"
+}
+```
+##### Response
+```json
+{
+  "status": "SUCCESS", //INVALID_EMAIL, INVALID_USERNAME,INVALID_PASSWORD
+}
+```
 #### [POST] /api/v1/all-library-games/alphabetically
 ```json
 {
@@ -54,8 +67,18 @@
       "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
-      "library_name": "STEAM", //UBISOFT, EPIC, ETC
-      "library_id": 897236428934,
+      "libraries": [
+        {
+          "library_name": "STEAM",
+          //UBISOFT, EPIC, ETC
+          "library_id": 897236428934
+        },
+        {
+          "library_name": "XBOX",
+          //UBISOFT, EPIC, ETC
+          "library_id": 54145123
+        }
+      ],
       "total_play_time": 157894 //In minutes
     },
     {
@@ -68,8 +91,18 @@
       "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
-      "library_name": "STEAM", //UBISOFT, EPIC, ETC
-      "library_id": 897236428934,
+      "libraries": [
+        {
+          "library_name": "STEAM",
+          //UBISOFT, EPIC, ETC
+          "library_id": 897236428934
+        },
+        {
+          "library_name": "XBOX",
+          //UBISOFT, EPIC, ETC
+          "library_id": 54145123
+        }
+      ],
       "total_play_time": 0 //In minutes
     },
     {
@@ -82,8 +115,18 @@
       "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
-      "library_name": "GOG", //UBISOFT, EPIC, ETC
-      "library_id": 897236428934,
+      "libraries": [
+        {
+          "library_name": "STEAM",
+          //UBISOFT, EPIC, ETC
+          "library_id": 897236428934
+        },
+        {
+          "library_name": "XBOX",
+          //UBISOFT, EPIC, ETC
+          "library_id": 54145123
+        }
+      ],
       "total_play_time": 12564894 //In minutes
     }
   ]
@@ -111,7 +154,18 @@
       "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
-      "library_name": "STEAM", //UBISOFT, EPIC, ETC
+      "libraries": [
+        {
+          "library_name": "STEAM",
+          //UBISOFT, EPIC, ETC
+          "library_id": 897236428934
+        },
+        {
+          "library_name": "XBOX",
+          //UBISOFT, EPIC, ETC
+          "library_id": 54145123
+        }
+      ],
       "library_id": 897236428934,
       "total_play_time": 564894 //In minutes
     },
@@ -125,8 +179,18 @@
       "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
-      "library_name": "STEAM", //UBISOFT, EPIC, ETC
-      "library_id": 897236428934,
+      "libraries": [
+        {
+          "library_name": "STEAM",
+          //UBISOFT, EPIC, ETC
+          "library_id": 897236428934
+        },
+        {
+          "library_name": "XBOX",
+          //UBISOFT, EPIC, ETC
+          "library_id": 54145123
+        }
+      ],
       "total_play_time": 0 //In minutes
     },
     {
@@ -139,8 +203,18 @@
       "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
-      "library_name": "STEAM", //UBISOFT, EPIC, ETC
-      "library_id": 897236428934,
+      "libraries": [
+        {
+          "library_name": "STEAM",
+          //UBISOFT, EPIC, ETC
+          "library_id": 897236428934
+        },
+        {
+          "library_name": "XBOX",
+          //UBISOFT, EPIC, ETC
+          "library_id": 54145123
+        }
+      ],
       "total_play_time": 1567894231 //In minutes
     }
   ]
@@ -169,11 +243,21 @@
   //UNIX TIME STAMP
   "picture_url": "https//pic.com",
   "banner_url": "https//pic.com",
-  "library_name": "STEAM",
-  //UBISOFT, EPIC, ETC
-  "library_id": 98302723907234,
-  "total_play_time": 15616132
-  //In minutes
+  "libraries": [
+    {
+      "library_name": "STEAM",
+      //UBISOFT, EPIC, ETC
+      "library_id": 897236428934,
+      "total_play_time": 15616132
+    },
+    {
+      "library_name": "XBOX",
+      //UBISOFT, EPIC, ETC
+      "library_id": 54145123,
+      "total_play_time": 165446
+      //In minutes
+    }
+  ],
   "videos": [
     {
       "name": "Trailer",
