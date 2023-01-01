@@ -56,5 +56,16 @@ public class SessionServiceImpl implements SessionService{
         return sessionRepository.findSessionBySessionId(sessionId).get().getUserId();
     }
 
+    public void destroySession(String sessionId) {
+        Optional<Session> sessionOpt = sessionRepository.findSessionBySessionId(sessionId);
+        if(sessionOpt.isEmpty()){
+            return;
+        }
+        Session session = sessionOpt.get();
+        session.setExpirationTimeStamp(LocalDateTime.now());
+        session.setUpdateTimeStamp(LocalDateTime.now());
+        sessionRepository.save(session);
+    }
+
 
 }

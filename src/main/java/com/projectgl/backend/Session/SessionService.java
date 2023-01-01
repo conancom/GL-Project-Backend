@@ -13,4 +13,6 @@ public interface SessionService {
 
     public Long getUserId(String sessionId);
 
+    public void destroySession(String sessionId);
+
 }
