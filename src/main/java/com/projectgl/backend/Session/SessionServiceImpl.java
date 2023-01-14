@@ -25,7 +25,7 @@ public class SessionServiceImpl implements SessionService{
                 .userId(userId)
                 .creationTimeStamp(LocalDateTime.now())
                 .updateTimeStamp(LocalDateTime.now())
-                .expirationTimeStamp(LocalDateTime.now().plusMinutes(SESSION_DURATION_MAX_HOURS))
+                .expirationTimeStamp(LocalDateTime.now().plusHours(SESSION_DURATION_MAX_HOURS))
                 .build();
         sessionRepository.save(session);
     }
@@ -47,7 +47,7 @@ public class SessionServiceImpl implements SessionService{
             return;
         }
         Session session = sessionOpt.get();
-        session.setExpirationTimeStamp(LocalDateTime.now().plusMinutes(SESSION_REFRESH_TIME_HOURS));
+        session.setExpirationTimeStamp(LocalDateTime.now().plusHours(SESSION_REFRESH_TIME_HOURS));
         session.setUpdateTimeStamp(LocalDateTime.now());
         sessionRepository.save(session);
     }
