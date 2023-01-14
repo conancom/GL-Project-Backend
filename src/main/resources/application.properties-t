@@ -1,16 +1,10 @@
 spring.datasource.url=jdbc:postgresql://localhost:5432/ProjectGL
-spring.datasource.username=
-spring.datasource.password=
+spring.datasource.username=postgres
+spring.datasource.password=password
 
-spring.jpa.hibernate.ddl-auto=none
+spring.jpa.hibernate.ddl-auto=update
 spring.sql.init.mode=always
 spring.sql.init.platform=postgres
-
-spring.session.store-type=jdbc
-spring.session.jdbc.initialize-schema=always
-
-# session time in seconds
-server.servlet.session.timeout=20
 
 logging.level.org.springframework=ERROR
 

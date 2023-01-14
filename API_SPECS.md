@@ -67,7 +67,7 @@
       "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
-      "libraries": [
+      "libraries": [ //Not Updated Yet
         {
           "library_name": "STEAM",
           //UBISOFT, EPIC, ETC
@@ -91,7 +91,7 @@
       "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
-      "libraries": [
+      "libraries": [ //Not Updated Yet
         {
           "library_name": "STEAM",
           //UBISOFT, EPIC, ETC
@@ -115,7 +115,7 @@
       "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
-      "libraries": [
+      "libraries": [ //Not Updated Yet
         {
           "library_name": "STEAM",
           //UBISOFT, EPIC, ETC
@@ -154,7 +154,7 @@
       "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
-      "libraries": [
+      "libraries": [ //Not Updated Yet
         {
           "library_name": "STEAM",
           //UBISOFT, EPIC, ETC
@@ -179,7 +179,7 @@
       "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
-      "libraries": [
+      "libraries": [ //Not Updated Yet
         {
           "library_name": "STEAM",
           //UBISOFT, EPIC, ETC
@@ -203,7 +203,7 @@
       "first_release_date": 1897651321, //UNIX TIME STAMP
       "picture_url": "https//pic.com",
       "banner_url": "https//pic.com",
-      "libraries": [
+      "libraries": [ //Not Updated Yet
         {
           "library_name": "STEAM",
           //UBISOFT, EPIC, ETC
@@ -243,7 +243,7 @@
   //UNIX TIME STAMP
   "picture_url": "https//pic.com",
   "banner_url": "https//pic.com",
-  "libraries": [
+  "libraries": [ //Not Updated Yet
     {
       "library_name": "STEAM",
       //UBISOFT, EPIC, ETC
