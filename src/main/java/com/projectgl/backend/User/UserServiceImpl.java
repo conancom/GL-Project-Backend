@@ -14,6 +14,7 @@ import com.projectgl.backend.Session.SessionService;
 import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
 import org.bouncycastle.crypto.params.Argon2Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -37,6 +38,8 @@ public class UserServiceImpl implements UserService {
 
     final public SessionService sessionService;
 
+    final BCryptPasswordEncoder passwordEncoder;
+
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, EntityManager entityManager, RegisteredLibraryAccountService registeredLibraryAccountService, PersonalGameInformationService personalGameInformationService, SessionService sessionService) {
@@ -45,6 +48,7 @@ public class UserServiceImpl implements UserService {
         this.registeredLibraryAccountService = registeredLibraryAccountService;
         this.personalGameInformationService = personalGameInformationService;
         this.sessionService = sessionService;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     private static byte[] generateSalt16Byte() {
@@ -67,10 +71,17 @@ public class UserServiceImpl implements UserService {
     }
 
     public RegisterResponse createUser(RegisterDto registerDto) {
-        byte[] salt = generateSalt16Byte();
-        String securedPassword = base64Encoding(generateHash(registerDto.getPassword(), salt));
-        String saltString = base64Encoding(salt);
-        User user = new User(registerDto.getUsername(), registerDto.getEmail(), securedPassword, saltString);
+
+//        byte[] salt = generateSalt16Byte();
+//        String securedPassword = base64Encoding(generateHash(registerDto.getPassword(), salt));
+//        String saltString = base64Encoding(salt);
+        String securedPassword = passwordEncoder.encode(registerDto.getPassword());
+
+        User user = User.builder()
+                .username(registerDto.getUsername())
+                .email(registerDto.getEmail())
+                .password(securedPassword).build();
+
         userRepository.save(user);
         return RegisterResponse.builder().status(RegisterResponse.Status.SUCCESS).username(registerDto.getUsername()).build();
     }
@@ -90,9 +101,11 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        byte[] salt = Base64.getDecoder().decode(user.get().getSalt());
-        String inputPassword = base64Encoding(generateHash(loginDto.getPassword(), salt));
-        if (!inputPassword.equals(user.get().getPassword())) {
+//        byte[] salt = Base64.getDecoder().decode(user.get().getSalt());
+//        String inputPassword = base64Encoding(generateHash(loginDto.getPassword(), salt));
+        //String inputPassword = passwordEncoder.encode(loginDto.getPassword());
+        //if (!inputPassword.equals(user.get().getPassword())) {
+        if (!passwordEncoder.matches(loginDto.getPassword(), user.get().getPassword())) {
             return LoginResponse.builder().username(user.get().getUsername()).status(LoginResponse.Status.INVALID_PASSWORD).build();
         }
 

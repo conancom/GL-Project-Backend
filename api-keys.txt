@@ -9,3 +9,9 @@ AWS RDS:
 	password: 6{hvyikj032nd[&)
 
 	eb create --single --database --database.engine postgres --engine-version 12
+
+SPRING_DATASOURCE_URL=jdbc:postgresql://awseb-e-nmtrpaigmh-stack-awsebrdsdatabase-vug4yblcz4up.cnshynebyier.ap-southeast-1.rds.amazonaws.com:5432/ebdb
+SPRING_DATASOURCE_USERNAME=gladmin
+SPRING_DATASOURCE_PASSWORD=6{hvyikj032nd[&)
+SPRING_JPA_HIBERNATE_DDL_AUTO=update
+SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
