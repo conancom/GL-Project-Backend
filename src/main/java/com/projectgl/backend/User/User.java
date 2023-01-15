@@ -15,11 +15,10 @@ import java.util.List;
 @NoArgsConstructor
 public class User {
 
-    public User(String username, String email, String password, String salt) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.salt = salt;
         this.registrationTimeStamp = LocalDateTime.now();
         this.updateTimeStamp = LocalDateTime.now();
         this.lastLoginTimeStamp = LocalDateTime.now();
@@ -34,8 +33,6 @@ public class User {
     private String email;
 
     private String password;
-
-    private String salt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RegisteredLibraryAccount> registeredLibraryAccountList;

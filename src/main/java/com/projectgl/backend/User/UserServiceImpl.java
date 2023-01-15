@@ -21,6 +21,7 @@ import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -80,7 +81,11 @@ public class UserServiceImpl implements UserService {
         User user = User.builder()
                 .username(registerDto.getUsername())
                 .email(registerDto.getEmail())
-                .password(securedPassword).build();
+                .password(securedPassword)
+                .registrationTimeStamp(LocalDateTime.now())
+                .updateTimeStamp(LocalDateTime.now())
+                .lastLoginTimeStamp(LocalDateTime.now())
+                .build();
 
         userRepository.save(user);
         return RegisterResponse.builder().status(RegisterResponse.Status.SUCCESS).username(registerDto.getUsername()).build();

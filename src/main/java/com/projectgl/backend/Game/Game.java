@@ -25,8 +25,10 @@ public class Game {
 
     private String title;
 
+    @Lob
     private String summary;
 
+    @Lob
     private String storyline;
 
     private double rating;

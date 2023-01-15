@@ -48,7 +48,7 @@ class UserServiceImplTest {
         registerDto = RegisterDto.builder().username("testUsername").email("testEmail@email.com").password("testPassword123").build();
         loginEmailDto = LoginDto.builder().username_email("test@email.com").password("password123").build();
         loginUsernameDto = LoginDto.builder().username_email("testUsername").password("password123").build();
-        user = User.builder().username("testUsername").email("test@email.com").password("password123").salt("randomsalthere").build();
+        user = User.builder().username("testUsername").email("test@email.com").password("password123").build();
     }
 
     private void expectUsernameIsInDatabase() {
