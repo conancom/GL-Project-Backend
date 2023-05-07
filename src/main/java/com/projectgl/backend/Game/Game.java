@@ -32,10 +32,8 @@ public class Game {
     @Column(nullable = false)
     private String title;
 
-    @Lob
     private String summary;
 
-    @Lob
     private String storyline;
 
     private double rating;

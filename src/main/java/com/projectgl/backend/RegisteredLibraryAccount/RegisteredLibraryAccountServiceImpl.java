@@ -11,6 +11,7 @@ import com.projectgl.backend.Response.LibraryRegisterResponse;
 import com.projectgl.backend.Response.LibraryResponse;
 import com.projectgl.backend.User.User;
 import com.projectgl.backend.User.UserRepository;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAccountService{
@@ -53,6 +56,7 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
         this.gameService = gameService;
     }
 
+    @Transactional
     public Optional<RegisteredLibraryAccount> findRegisteredLibraryAccountById(long registeredLibraryAccountId) {
         return registeredLibraryAccountRepository.findById(registeredLibraryAccountId);
     }
@@ -259,8 +263,8 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
             String processedName = steamResponseGame.getName();
             String searchName = processedName.replaceAll("[-+.^:,®™]", "").replaceAll("\\(.*\\)", "").replaceAll("\\s+$", "").toLowerCase().replaceAll("\\s+", " ");
 
-            List<PersonalGameInformation> filteredList = personalGameInformationList.stream().filter( personalGameInformation -> !personalGameInformation.getGame().getSearchName().equals(searchName)).toList();
-            if(filteredList.size() < 1){
+            List<PersonalGameInformation> filteredList = personalGameInformationList.stream().filter( personalGameInformation -> personalGameInformation.getGame().getSearchName().equals(searchName)).toList();
+            if(filteredList.size()==0){
                 Game game = gameService.synchronizeGameFromSteam(steamResponseGame);
                 if (game != null) { //TODO: Find more Edge Cases to Fix
                     PersonalGameInformation gameInformation = PersonalGameInformation.builder()
