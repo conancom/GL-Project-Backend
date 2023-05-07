@@ -70,7 +70,14 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
             libraryGamesResponse.setStatus(LibraryGamesResponse.Status.ACCOUNT_ID_MISSMATCH);
             return libraryGamesResponse;
         }
-        List<PersonalGameInformation> personalGameInformations = registeredLibraryAccount.getPersonalGameInformationList();
+
+        if(registeredLibraryAccount.getAccountType().equals("STEAM")){
+            synchronizeSteamRegisteredLibraryAccount(registeredLibraryAccount);
+        }
+
+        Optional<RegisteredLibraryAccount> newRegisteredLibraryAccount = findRegisteredLibraryAccountById(registeredLibraryAccount.getId());
+
+        List<PersonalGameInformation> personalGameInformations = newRegisteredLibraryAccount.orElseThrow().getPersonalGameInformationList();
         libraryGamesResponse.setGames(new ArrayList<>());
         personalGameInformations.forEach(personalGameInformation -> {
             GameDetail gameDetail = GameDetail.builder()
