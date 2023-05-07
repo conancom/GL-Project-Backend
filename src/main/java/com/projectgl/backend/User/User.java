@@ -8,7 +8,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "user", schema = "public")
+@Table(name = "user", indexes = {
+        @Index(columnList = "username"),
+        @Index(columnList = "email"),
+        @Index(columnList = "updatetimestamp")
+}, schema = "public")
 @Builder
 @Getter
 @AllArgsConstructor
@@ -28,23 +32,26 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String username;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RegisteredLibraryAccount> registeredLibraryAccountList;
 
-    @Column(name = "registrationtimestamp")
-    private LocalDateTime registrationTimeStamp;
+    @Column(name = "registrationtimestamp", nullable = false, updatable = false)
+    private LocalDateTime registrationTimeStamp = LocalDateTime.now();
 
-    @Column(name = "updatetimestamp")
-    private LocalDateTime updateTimeStamp;
+    @Column(name = "updatetimestamp", nullable = false)
+    private LocalDateTime updateTimeStamp = LocalDateTime.now();
 
-    @Column(name = "lastlogintimestamp")
-    private LocalDateTime lastLoginTimeStamp;
+    @Column(name = "lastlogintimestamp", nullable = false)
+    private LocalDateTime lastLoginTimeStamp = LocalDateTime.now();
 
     public void addRegisteredLibraryAccount(RegisteredLibraryAccount registeredLibraryAccount){
         this.registeredLibraryAccountList.add(registeredLibraryAccount);

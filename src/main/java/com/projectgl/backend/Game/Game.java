@@ -1,19 +1,21 @@
 package com.projectgl.backend.Game;
 
 import com.projectgl.backend.PersonalGameInformation.PersonalGameInformation;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "game")
-@NoArgsConstructor
+@Table(name = "game", indexes = {
+        @Index(columnList = "name"),
+        @Index(columnList = "searchName"),
+        @Index(columnList = "creationtimestamp"),
+        @Index(columnList = "updatetimestamp")
+}, schema = "public")
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Getter
 public class Game {
@@ -21,8 +23,13 @@ public class Game {
     @Id
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String searchName;
+
+    @Column(nullable = false)
     private String title;
 
     @Lob
@@ -51,11 +58,11 @@ public class Game {
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GameScreenshot> gameScreenshots;
 
-    @Column(name = "creationtimestamp")
-    private LocalDateTime creationTimeStamp;
+    @Column(name = "creationtimestamp", nullable = false, updatable = false)
+    private LocalDateTime creationTimeStamp = LocalDateTime.now();
 
-    @Column(name = "updatetimestamp")
-    private LocalDateTime updateTimeStamp;
+    @Column(name = "updatetimestamp", nullable = false)
+    private LocalDateTime updateTimeStamp = LocalDateTime.now();
 
     public void addPersonalGameInformation(PersonalGameInformation personalGameInformation){
         this.personalGameInformationList.add(personalGameInformation);

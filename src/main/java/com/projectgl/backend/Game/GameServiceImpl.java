@@ -39,14 +39,14 @@ public class GameServiceImpl implements GameService {
     }
 
     public Game synchronizeGameFromSteam(SteamResponseGame steamResponseGame) {
-        String processedName = steamResponseGame.getName(); //TODO: Find a better way to clean string
-        steamResponseGame.setName(processedName.replaceAll("[-+.^:,®™]","").replaceAll("\\(.*\\)", "").replaceAll("\\s+$", "").toLowerCase().replaceAll("\\s+", " ")); //Remove Last Space
-        Optional<Game> optGame = gameRepository.findGameByName(steamResponseGame.getName());
+        String processedName = steamResponseGame.getName();
+        String searchName = processedName.replaceAll("[-+.^:,®™]", "").replaceAll("\\(.*\\)", "").replaceAll("\\s+$", "").toLowerCase().replaceAll("\\s+", " ");
+        Optional<Game> optGame = gameRepository.findGameBySearchName(searchName);
         Game game;
         if(optGame.isEmpty()){
-            game = getGameInformationFromIgdb(steamResponseGame.getName());
+            game = getGameInformationFromIgdb(searchName);
             if (game != null) {
-                gameRepository.save(game);
+                gameRepository.saveAndFlush(game);
             }
         }else {
             game = optGame.get();
@@ -135,7 +135,6 @@ public class GameServiceImpl implements GameService {
         }
 
         //TODO: Add Artwork
-        //TODO: Create 1:M Tables for Screenshots and Videos to Games
 
         //Screenshots
         final String findScreenshoturi = "https://api.igdb.com/v4/screenshots";
@@ -202,6 +201,7 @@ public class GameServiceImpl implements GameService {
                 .updateTimeStamp(LocalDateTime.now())
                 .gameVideos(videos)
                 .gameScreenshots(screentshots)
+                .searchName(gameName)
                 .build();
         videos.forEach( video -> {
             video.setGame(game);

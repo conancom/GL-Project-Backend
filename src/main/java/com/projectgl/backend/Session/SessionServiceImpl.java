@@ -35,10 +35,7 @@ public class SessionServiceImpl implements SessionService{
         if(sessionOpt.isEmpty()){
             return false;
         }
-        if(LocalDateTime.now().isAfter(sessionOpt.get().getExpirationTimeStamp())){
-            return false;
-        }
-        return true;
+        return !LocalDateTime.now().isAfter(sessionOpt.get().getExpirationTimeStamp());
     }
 
     public void refreshSession(String sessionId) {

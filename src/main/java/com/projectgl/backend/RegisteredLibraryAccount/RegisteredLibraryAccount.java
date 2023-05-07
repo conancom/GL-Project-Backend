@@ -9,7 +9,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "registered_library_account")
+@Table(name = "registered_library_account", indexes = {
+        @Index(columnList = "creationtimestamp"),
+        @Index(columnList = "updatetimestamp")
+})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -27,11 +30,11 @@ public class RegisteredLibraryAccount {
     @Column(name = "refreshkey")
     private String refreshkey;
 
-    @Column(name = "creationtimestamp")
-    private LocalDateTime creationTimeStamp;
+    @Column(name = "creationtimestamp", nullable = false, updatable = false)
+    private LocalDateTime creationTimeStamp = LocalDateTime.now();
 
-    @Column(name = "updatetimestamp")
-    private LocalDateTime updateTimeStamp;
+    @Column(name = "updatetimestamp", nullable = false)
+    private LocalDateTime updateTimeStamp = LocalDateTime.now();
 
     @Column(name = "type")
     private String accountType;

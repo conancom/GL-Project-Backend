@@ -8,12 +8,12 @@ import java.util.Optional;
 
 public interface RegisteredLibraryAccountService {
 
-    public Optional<RegisteredLibraryAccount> findRegisteredLibraryAccountById(long registeredLibraryAccountId);
+    Optional<RegisteredLibraryAccount> findRegisteredLibraryAccountById(long registeredLibraryAccountId);
 
-    public LibraryGamesResponse createLibraryAccountResponse(long userId, long reg);
+    LibraryGamesResponse createLibraryAccountResponse(long userId, long reg);
 
-    public LibraryRegisterResponse registerLibraryAccount(long userId, String libraryType, String libraryApiKey);
+    LibraryRegisterResponse registerLibraryAccount(long userId, String libraryType, String libraryApiKey);
 
-    public LibraryResponse getAllLibraryAccounts(long userId);
+    LibraryResponse getAllLibraryAccounts(long userId);
 
 }

@@ -174,8 +174,8 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
                     registeredLibraryAccount.getPersonalGameInformationList().add(gameInformation);
                 }
             });
-
             user.getRegisteredLibraryAccountList().add(registeredLibraryAccount);
+
             userRepository.saveAndFlush(user);
         }else if(libraryType.equals("GOG")){
             GogTokenResponse gogTokenResponse = newLoginGogToken(libraryApiKey);

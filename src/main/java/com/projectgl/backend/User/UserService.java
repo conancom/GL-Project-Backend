@@ -11,16 +11,16 @@ import java.util.Optional;
 
 public interface UserService {
 
-    public boolean userExistsUsername(RegisterDto registerDto);
+    boolean userExistsUsername(RegisterDto registerDto);
 
-    public boolean userExistsEmail(RegisterDto registerDto);
+    boolean userExistsEmail(RegisterDto registerDto);
 
-    public RegisterResponse createUser(RegisterDto registerDto);
+    RegisterResponse createUser(RegisterDto registerDto);
 
-    public LoginResponse loginUser(LoginDto loginDto, HttpServletRequest request);
+    LoginResponse loginUser(LoginDto loginDto, HttpServletRequest request);
 
-    public Optional<User> findUserbyId(long userId);
+    Optional<User> findUserbyId(long userId);
 
-    public LibraryGamesResponse createAllLibraryAccountResponse(Long userId);
+    LibraryGamesResponse createAllLibraryAccountResponse(Long userId);
 
 }

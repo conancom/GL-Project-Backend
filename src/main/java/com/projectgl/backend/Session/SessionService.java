@@ -5,14 +5,14 @@ import org.springframework.stereotype.Service;
 @Service
 public interface SessionService {
 
-    public void createSession(String sessionId, Long userId);
+    void createSession(String sessionId, Long userId);
 
-    public boolean validateSession(String sessionId);
+    boolean validateSession(String sessionId);
 
-    public void refreshSession(String sessionId);
+    void refreshSession(String sessionId);
 
-    public Long getUserId(String sessionId);
+    Long getUserId(String sessionId);
 
-    public void destroySession(String sessionId);
+    void destroySession(String sessionId);
 
 }

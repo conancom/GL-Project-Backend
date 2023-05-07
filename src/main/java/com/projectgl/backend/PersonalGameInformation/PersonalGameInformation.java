@@ -12,7 +12,10 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Getter
-@Table(name = "personalgameinformation")
+@Table(name = "personalgameinformation", indexes = {
+        @Index(columnList = "creationtimestamp"),
+        @Index(columnList = "updatetimestamp")
+})
 public class PersonalGameInformation {
 
     @Id
@@ -29,12 +32,12 @@ public class PersonalGameInformation {
     @JoinColumn(name = "gameid")
     Game game;
 
-    @Column(name = "creationtimestamp")
-    private LocalDateTime creationTimeStamp;
+    @Column(name = "creationtimestamp", nullable = false, updatable = false)
+    private LocalDateTime creationTimeStamp = LocalDateTime.now();
 
-    @Column(name = "updatetimestamp")
-    private LocalDateTime updateTimeStamp;
+    @Column(name = "updatetimestamp", nullable = false)
+    private LocalDateTime updateTimeStamp = LocalDateTime.now();
 
-    private int totaltimeplayed;
+    private int totaltimeplayed = 0;
 
 }
