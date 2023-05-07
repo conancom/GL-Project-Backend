@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.html.Option;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -134,7 +135,14 @@ public class UserServiceImpl implements UserService {
         libraryGamesResponse = LibraryGamesResponse.builder().build();
         libraryGamesResponse.setGames(new ArrayList<>());
         registeredLibraryAccounts.forEach(registeredLibraryAccount -> {
-            List<PersonalGameInformation> personalGameInformations = registeredLibraryAccount.getPersonalGameInformationList();
+
+            if(registeredLibraryAccount.getAccountType().equals("STEAM")){
+                registeredLibraryAccountService.synchronizeSteamRegisteredLibraryAccount(registeredLibraryAccount);
+            }
+
+            Optional<RegisteredLibraryAccount> newRegisteredLibraryAccount = registeredLibraryAccountService.findRegisteredLibraryAccountById(registeredLibraryAccount.getId());
+
+            List<PersonalGameInformation> personalGameInformations = newRegisteredLibraryAccount.orElseThrow().getPersonalGameInformationList();
             personalGameInformations.forEach(personalGameInformation -> {
                 GameDetail gameDetail = GameDetail.builder()
                         .game_name(personalGameInformation.getGame().getName())

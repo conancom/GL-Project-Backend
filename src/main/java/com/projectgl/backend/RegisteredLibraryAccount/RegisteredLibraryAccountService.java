@@ -16,4 +16,6 @@ public interface RegisteredLibraryAccountService {
 
     LibraryResponse getAllLibraryAccounts(long userId);
 
+    void synchronizeSteamRegisteredLibraryAccount(RegisteredLibraryAccount registeredLibraryAccount);
+
 }

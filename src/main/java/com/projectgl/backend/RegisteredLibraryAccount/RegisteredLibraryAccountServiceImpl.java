@@ -242,4 +242,32 @@ public class RegisteredLibraryAccountServiceImpl implements RegisteredLibraryAcc
         });
         return libraryResponse;
     }
+
+    public void synchronizeSteamRegisteredLibraryAccount(RegisteredLibraryAccount registeredLibraryAccount) {
+        ArrayList<PersonalGameInformation> personalGameInformationList
+                = personalGameInformationRepository.getPersonalGameInformationByRegisteredLibraryAccount(registeredLibraryAccount);
+        SteamGames steamResponse = getSteamGames(registeredLibraryAccount.getApiKey());
+
+        steamResponse.getResponse().getGames().forEach(steamResponseGame -> {
+            String processedName = steamResponseGame.getName();
+            String searchName = processedName.replaceAll("[-+.^:,®™]", "").replaceAll("\\(.*\\)", "").replaceAll("\\s+$", "").toLowerCase().replaceAll("\\s+", " ");
+
+            List<PersonalGameInformation> filteredList = personalGameInformationList.stream().filter( personalGameInformation -> !personalGameInformation.getGame().getSearchName().equals(searchName)).toList();
+            if(filteredList.size() < 1){
+                Game game = gameService.synchronizeGameFromSteam(steamResponseGame);
+                if (game != null) { //TODO: Find more Edge Cases to Fix
+                    PersonalGameInformation gameInformation = PersonalGameInformation.builder()
+                            .registeredLibraryAccount(registeredLibraryAccount)
+                            .creationTimeStamp(LocalDateTime.now())
+                            .updateTimeStamp(LocalDateTime.now())
+                            .game(game)
+                            .totaltimeplayed(steamResponseGame.getPlaytime_forever())
+                            .build();
+                    game.getPersonalGameInformationList().add(gameInformation);
+                    personalGameInformationRepository.saveAndFlush(gameInformation);
+                    registeredLibraryAccount.getPersonalGameInformationList().add(gameInformation);
+                }
+            }
+        });
+    }
 }

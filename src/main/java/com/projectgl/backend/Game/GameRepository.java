@@ -13,4 +13,5 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
     @Transactional
     Optional<Game> findGameBySearchName(String searchName);
+
 }
