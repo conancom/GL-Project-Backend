@@ -8,6 +8,7 @@ spring.sql.init.mode=always
 spring.sql.init.platform=postgres
 
 logging.level.org.springframework=ERROR
+server.max-http-header-size=8192
 
 # logs the SQL statements
 log4j.logger.org.hibernate.SQL=debug
