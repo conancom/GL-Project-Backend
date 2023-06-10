@@ -28,7 +28,7 @@ public class PersonalGameInformation {
     RegisteredLibraryAccount registeredLibraryAccount;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "gameid")
     Game game;
 
