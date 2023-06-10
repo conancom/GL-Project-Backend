@@ -2,6 +2,9 @@ package com.projectgl.backend.Game;
 
 import com.projectgl.backend.PersonalGameInformation.PersonalGameInformation;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -34,6 +37,9 @@ public class Game {
 
     private String summary;
 
+    @Column(name = "storyline", nullable = false)
+    @ColumnDefault("")
+    @Nationalized
     private String storyline;
 
     private double rating;
