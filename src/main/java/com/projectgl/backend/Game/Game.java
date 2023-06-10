@@ -35,6 +35,7 @@ public class Game {
     @Column(nullable = false)
     private String title;
 
+    @Lob
     private String summary;
 
     @Lob
