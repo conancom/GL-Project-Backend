@@ -37,9 +37,7 @@ public class Game {
 
     private String summary;
 
-    @Column(name = "storyline", nullable = false)
-    @ColumnDefault("")
-    @Nationalized
+    @Lob
     private String storyline;
 
     private double rating;
