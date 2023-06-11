@@ -86,6 +86,8 @@ public class GameServiceImpl implements GameService {
         ResponseEntity<ArrayList> result = restTemplateGame.postForEntity(findGameuri, requestEntityGame, ArrayList.class);
         System.out.println("Init: " + gameName);
 
+        Thread.sleep(350);
+        
         Optional foundGameMapPartialOpt = result.getBody().stream().filter(foundGame ->
             ((Map<String, Object>)foundGame).get("name") != null && ((Map<String, Object>)foundGame).get("name").toString().replaceAll("[-+.^:,®™()]","").toLowerCase().contains(gameName)).findAny();
 
@@ -123,6 +125,8 @@ public class GameServiceImpl implements GameService {
         HttpEntity<String> requestEntityCover = new HttpEntity<>(coverBody, headers);
         ResponseEntity<ArrayList> resultCover = restTemplateGame.postForEntity(findCoveruri, requestEntityCover, ArrayList.class);
 
+        Thread.sleep(350);
+        
         String imageLink;
                 Optional foundCoverMapOpt = resultCover.getBody().stream().filter(foundCover ->
             ((Map<String, Object>)foundCover).get("image_id") != null).findFirst();
@@ -130,6 +134,7 @@ public class GameServiceImpl implements GameService {
             Map<String, Object> foundCoverMap = (Map<String, Object>) foundCoverMapOpt.get();
             imageLink = String.format("//images.igdb.com/igdb/image/upload/t_1080p/%s.jpg", foundCoverMap.get("image_id"));
             System.out.println(imageLink);
+            
         }else{
             imageLink = "Not Available";
         }
@@ -142,6 +147,8 @@ public class GameServiceImpl implements GameService {
         HttpEntity<String> requestEntityScreenShot = new HttpEntity<>(screenshotBody, headers);
         ResponseEntity<ArrayList> resultScreenShot = restTemplateGame.postForEntity(findScreenshoturi, requestEntityScreenShot, ArrayList.class);
 
+        Thread.sleep(350);
+        
         ArrayList<GameScreenshot> screentshots = new ArrayList<>();
         if (!resultScreenShot.getBody().isEmpty()){
             resultScreenShot.getBody().forEach( screentshot -> {
@@ -166,6 +173,8 @@ public class GameServiceImpl implements GameService {
         HttpEntity<String> requestEntityVideo = new HttpEntity<>(videoBody, headers);
         ResponseEntity<ArrayList> resultVideo = restTemplateGame.postForEntity(findVideouri, requestEntityVideo, ArrayList.class);
 
+        Thread.sleep(350);
+        
         ArrayList<GameVideo> videos = new ArrayList<>();
         if (!resultVideo.getBody().isEmpty()){
             resultVideo.getBody().forEach( screentshot -> {
