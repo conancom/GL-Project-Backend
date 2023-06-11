@@ -31,6 +31,13 @@ spring.datasource.password=YOUR_POSTGRES_PASSWORD
 
 3. Run `BackendApplication.java` and enjoy on http://localhost:8080
 
+## TODO
+
+1. Clean up unused code and comments.
+2. Complete Unit tests.
+3. Add integration tests.
+4. Fix Docker.
+
 ## Resources
 
 - [GL Project Frontend - @charnar](https://github.com/charnar/GL-Project-Frontend)
