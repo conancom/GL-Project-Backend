@@ -86,8 +86,12 @@ public class GameServiceImpl implements GameService {
         ResponseEntity<ArrayList> result = restTemplateGame.postForEntity(findGameuri, requestEntityGame, ArrayList.class);
         System.out.println("Init: " + gameName);
 
-        Thread.sleep(350);
-        
+        try {
+            Thread.sleep(350);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         Optional foundGameMapPartialOpt = result.getBody().stream().filter(foundGame ->
             ((Map<String, Object>)foundGame).get("name") != null && ((Map<String, Object>)foundGame).get("name").toString().replaceAll("[-+.^:,®™()]","").toLowerCase().contains(gameName)).findAny();
 
@@ -125,7 +129,11 @@ public class GameServiceImpl implements GameService {
         HttpEntity<String> requestEntityCover = new HttpEntity<>(coverBody, headers);
         ResponseEntity<ArrayList> resultCover = restTemplateGame.postForEntity(findCoveruri, requestEntityCover, ArrayList.class);
 
-        Thread.sleep(350);
+        try {
+            Thread.sleep(350);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         
         String imageLink;
                 Optional foundCoverMapOpt = resultCover.getBody().stream().filter(foundCover ->
@@ -147,7 +155,11 @@ public class GameServiceImpl implements GameService {
         HttpEntity<String> requestEntityScreenShot = new HttpEntity<>(screenshotBody, headers);
         ResponseEntity<ArrayList> resultScreenShot = restTemplateGame.postForEntity(findScreenshoturi, requestEntityScreenShot, ArrayList.class);
 
-        Thread.sleep(350);
+        try {
+            Thread.sleep(350);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         
         ArrayList<GameScreenshot> screentshots = new ArrayList<>();
         if (!resultScreenShot.getBody().isEmpty()){
@@ -173,7 +185,11 @@ public class GameServiceImpl implements GameService {
         HttpEntity<String> requestEntityVideo = new HttpEntity<>(videoBody, headers);
         ResponseEntity<ArrayList> resultVideo = restTemplateGame.postForEntity(findVideouri, requestEntityVideo, ArrayList.class);
 
-        Thread.sleep(350);
+        try {
+            Thread.sleep(350);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         
         ArrayList<GameVideo> videos = new ArrayList<>();
         if (!resultVideo.getBody().isEmpty()){
